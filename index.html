@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" />
+  <title>DialSafe Simulator - 金庫ダイヤルシミュレーター</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="topbar">
+      <div class="brand">
+        <h1 data-i18n="app.title">DialSafe Simulator</h1>
+        <p class="subtitle" data-i18n="app.subtitle">
+          金庫ダイヤルシミュレーター（4枚座の固定ダイヤル錠・正規解錠を可視化）
+        </p>
+      </div>
+      <div class="lang-switch">
+        <label for="lang-select" class="sr" data-i18n="ui.language">言語</label>
+        <select id="lang-select" aria-label="Language">
+          <option value="ja">日本語</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="tabs">
+      <button class="tab-button active" data-tab="learn" data-i18n="tab.learn">LEARN</button>
+      <button class="tab-button" data-tab="sim" data-i18n="tab.sim">SIMULATOR</button>
+      <button class="tab-button" data-tab="challenge" data-i18n="tab.challenge">CHALLENGE</button>
+    </nav>
+
+    <!-- LEARN -->
+    <section id="learn" class="tab-content active">
+      <div class="card">
+        <h2 data-i18n="learn.title">学習モード</h2>
+        <p data-i18n="learn.desc">
+          固定ダイヤル錠（4枚座）は、<strong>第1〜第3ディスク＋ドライビングディスク</strong>の
+          4つのゲートを一直線に揃えると<strong>フェンス</strong>が落ち、閂を引き込めます。
+        </p>
+        <ol id="learn-steps">
+          <li data-i18n="learn.step1">① 右（R）に<strong>4回以上</strong>まわして、<strong>1番目</strong>の数値で停止</li>
+          <li data-i18n="learn.step2">② 左（L）に<strong>3回</strong>まわして、<strong>2番目</strong>の数値で停止</li>
+          <li data-i18n="learn.step3">③ 右（R）に<strong>2回</strong>まわして、<strong>3番目</strong>の数値で停止</li>
+          <li data-i18n="learn.step4">④ 左（L）に<strong>1回</strong>まわして、<strong>4番目</strong>の数値で停止</li>
+        </ol>
+        <p class="note" data-i18n="learn.note">
+          「○回まわす」は<strong>そのステップの解錠数値</strong>が指標を通過する回数を指します。
+          回し過ぎたらやり直し。※教育用の簡易モデルです。
+        </p>
+        <div class="learn-controls">
+          <button id="learn-demo" data-i18n="btn.learnDemo">手順を自動実演</button>
+          <button id="learn-reset" class="secondary" data-i18n="btn.reset">リセット</button>
+        </div>
+        <div id="learn-log" class="log" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- SIMULATOR -->
+    <section id="sim" class="tab-content">
+      <div class="grid">
+        <div class="card">
+          <h2 data-i18n="sim.dialTitle">ダイヤル操作</h2>
+          <div class="dial-wrap">
+            <div id="dial" class="dial" aria-label="dial" role="slider" aria-valuemin="0" aria-valuemax="99" aria-valuenow="0" tabindex="0">
+              <div class="dial-face"></div>
+              <div class="dial-marker"></div>
+              <div class="dial-value" id="dial-value">00</div>
+            </div>
+          </div>
+          <div class="controls">
+            <button data-rot="-10" data-i18n="sim.rotm10">⟲ -10</button>
+            <button data-rot="-1" data-i18n="sim.rotm1">-1</button>
+            <button data-rot="+1" data-i18n="sim.rotp1">+1</button>
+            <button data-rot="+10" data-i18n="sim.rotp10">+10 ⟳</button>
+          </div>
+          <div class="controls">
+            <label data-i18n="sim.targetLabel">ターゲット番号：
+              <input id="target-number" type="number" min="0" max="99" value="0" />
+            </label>
+            <button id="snap-target" data-i18n="sim.snap">ターゲットへ合わせる</button>
+            <button id="sim-reset" class="secondary" data-i18n="btn.reset">リセット</button>
+          </div>
+          <p class="hint" data-i18n="sim.hint">ドラッグ／ホイール／← → / A D で回転。数字は 0–99。</p>
+        </div>
+
+        <div class="card">
+          <h2 data-i18n="sim.innerTitle">内部可視化</h2>
+          <div class="stack">
+            <div class="wheel" id="dw">
+              <div class="wheel-title">Driving Disc</div>
+              <div class="gate" id="dw-gate"></div>
+            </div>
+            <div class="wheel" id="w3">
+              <div class="wheel-title">Disc 3</div>
+              <div class="gate" id="w3-gate"></div>
+            </div>
+            <div class="wheel" id="w2">
+              <div class="wheel-title">Disc 2</div>
+              <div class="gate" id="w2-gate"></div>
+            </div>
+            <div class="wheel" id="w1">
+              <div class="wheel-title">Disc 1</div>
+              <div class="gate" id="w1-gate"></div>
+            </div>
+            <div class="fence">
+              <div class="fence-bar" id="fence-bar"></div>
+              <div class="fence-status" id="fence-status">FENCE: UP</div>
+            </div>
+          </div>
+          <div class="status">
+            <div><span data-i18n="sim.dir">方向</span>: <span id="dir">—</span></div>
+            <div><span data-i18n="sim.passes">通過回数</span>: <span id="passes">0</span></div>
+            <div><span data-i18n="sim.current">現在値</span>: <span id="value">00</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHALLENGE -->
+    <section id="challenge" class="tab-content">
+      <div class="card">
+        <h2 data-i18n="ch.title">チャレンジモード</h2>
+        <p data-i18n="ch.desc">
+          ランダムに設定された<strong>4番号</strong>を、正しい通過回数
+          <code>R(4) → L(3) → R(2) → L(1)</code>で合わせて開錠してください。
+        </p>
+        <div class="challenge-row">
+          <button id="challenge-new" data-i18n="ch.new">新しい暗証を作成</button>
+          <div id="challenge-mask" class="mask">??? - ??? - ??? - ???</div>
+          <button id="challenge-reveal" class="secondary" data-i18n="ch.reveal">答えを表示</button>
+        </div>
+        <div class="challenge-row">
+          <button id="challenge-step" data-i18n="ch.step">手順ステップ確定（Enter）</button>
+          <button id="challenge-reset" class="secondary" data-i18n="btn.reset">リセット</button>
+        </div>
+        <div id="challenge-progress" class="progress"></div>
+        <div id="open-banner" class="open-banner" hidden>OPEN ✅</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer">
+      🔗 <span data-i18n="footer.repo">GitHubリポジトリはこちら</span>（
+      <a href="https://github.com/ipusiron/dialsafe-simulator" target="_blank" rel="noopener noreferrer">ipusiron/dialsafe-simulator</a> ）
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
