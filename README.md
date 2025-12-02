@@ -1,11 +1,38 @@
 <!--
 ---
-title: DialSafe Simulator
-category: physical-security
+id: day050
+slug: dialsafe-simulator
+
+title: "DialSafe Simulator"
+
+subtitle_ja: "金庫ダイヤルシミュレーター"
+subtitle_en: "Safe Dial Lock Simulator"
+
+description_ja: "4枚座の固定ダイヤル錠の正規開錠手順と内部構造をブラウザ上でインタラクティブに可視化する教育ツール"
+description_en: "An interactive educational tool to visualize the legitimate unlocking procedure and internal mechanics of 4-disk fixed-conversion dial locks"
+
+category_ja:
+  - 物理セキュリティ
+  - 鍵開け
+category_en:
+  - Physical Security
+  - Lock Picking
+
 difficulty: 2
-description: Learn how a 4-wheel safe combination lock works via interactive visualization.
-tags: [picking, safe, dial, lock, education, physical-security, locksport]
-demo: https://ipusiron.github.io/dialsafe-simulator/
+
+tags:
+  - dial-lock
+  - safe
+  - locksport
+  - physical-security
+  - education
+  - visualization
+  - interactive
+
+repo_url: "https://github.com/ipusiron/dialsafe-simulator"
+demo_url: "https://ipusiron.github.io/dialsafe-simulator/"
+
+hub: true
 ---
 -->
 
@@ -23,7 +50,7 @@ demo: https://ipusiron.github.io/dialsafe-simulator/
 
 **DialSafe Simulator**は、**ダイヤル式金庫の正規の開錠手順**と**内部構造の動き**を、ブラウザ上で学べる可視化ツールです。
 
-ダイヤルを回すと **「ドライビングディスク → ツク連動 → 各ディスクの回転 → ゲート位置合わせ → フェンス」**の一連の動作がリアルタイムで可視化され、正しい4ステップ手順で操作したときのみ開錠します。
+ダイヤルを回すと **「ドライビングディスク → ツク連動 → 各ディスクの回転 → ゲート位置合わせ → フェンス」** の一連の動作がリアルタイムで可視化され、正しい4ステップ手順で操作したときのみ開錠します。
 
 > 本ツールは教育（正規操作の理解）を目的とし、攻撃・バイパス手法は扱いません。
 

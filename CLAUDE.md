@@ -8,18 +8,29 @@ DialSafe Simulator - An educational web-based visualization tool for understandi
 
 ## Architecture
 
-The project is a single-page application built with vanilla HTML/CSS/JavaScript, designed for GitHub Pages deployment:
+Single-page application built with vanilla HTML/CSS/JavaScript for GitHub Pages deployment (no build process):
 
-- **index.html**: Main HTML structure with three tabs (LEARN, SIMULATOR, CHALLENGE)
-- **script.js**: Core logic including dial mechanics, disk rotation physics, internationalization (i18n), and challenge mode
-- **style.css**: All styling with CSS Grid/Flexbox layouts and animations
+- **index.html**: Main structure with two tabs (LEARN, SIMULATOR)
+- **script.js**: Core logic (~1300 lines) containing dial mechanics, disk physics, i18n, and demo patterns
+- **style.css**: Styling with CSS Grid/Flexbox, dark/light themes via CSS custom properties
 - **assets/**: Educational diagrams and photos of actual dial locks
 
-Key components:
-- **Dial System**: Simulates a 0-99 dial with drag, keyboard, and button controls
-- **Disk Mechanics**: Models 4 disks (3 regular + 1 driving disk) with gates and fence interaction
-- **Opening Sequence**: Implements the R(4)→L(3)→R(2)→L(1) unlocking pattern
-- **i18n Support**: Full Japanese/English translation system using data-i18n attributes
+### Key State Management (script.js)
+
+The `state` object manages all simulation state:
+- `value`: Current dial position (0-99)
+- `wheels[]`: Array of 4 disk objects with `gate`, `tsuku` (pin), and `position` properties
+- `combo`: Correct combination array (e.g., `[94, 30, 84, 13]`)
+- `stepIndex`: Current step in the 4-step unlock sequence
+- `dir`/`passes`: Direction and pass count for step validation
+
+### Disk Mechanics
+
+The driving disk connects directly to the dial. Other disks engage through pin (tsuku) collision detection in `driveDisks()`. Gates must align at position 50 for the fence to drop (checked in `checkFence()` with `FENCE_TOL` tolerance).
+
+### i18n System
+
+Translations stored in `I18N` object with `ja`/`en` keys. `applyI18n()` applies translations to elements with `data-i18n` attributes. Language persists via localStorage.
 
 ## Development Commands
 
@@ -28,15 +39,14 @@ Key components:
 python -m http.server 8000
 # Then open http://localhost:8000
 
-# No build process required - pure vanilla JS/HTML/CSS
+# No build process - pure vanilla JS/HTML/CSS
 # Deploy by pushing to GitHub Pages branch
 ```
 
 ## Testing
 
-Manual testing via browser - no automated test framework. Key areas to verify:
+Manual browser testing. Key verification areas:
 - Dial rotation accuracy (0-99 wrapping)
-- Disk engagement mechanics
-- Challenge mode random combination generation
-- Language switching persistence
-- Mobile touch/drag functionality
+- Disk engagement via tsuku collision
+- Demo patterns (5 patterns showing success/failure cases)
+- Language/theme switching persistence
