@@ -118,7 +118,7 @@
     'inner.note': '中央の線がフェンスの位置です。各ディスクの橙色のゲートが線の上に揃うと、フェンスが落ちます。上下に並ぶツクが触れると、上のディスクが下のディスクを押して一緒に回します。',
 
     'demo.title': '自動実演',
-    'demo.lead': '初期状態（左に回して止めた状態）から、模型を実際に1目盛りずつ回します。',
+    'demo.lead': '左に回して止めた状態から、模型を実際に1目盛りずつ回します。',
     'demo.btn1': '① 正確な操作',
     'demo.btn2': '② 右に5回（多め）',
     'demo.btn3': '③ 右に3回（不足）',
@@ -147,7 +147,32 @@
     'wheel.name.1': '第2ディスク',
     'wheel.name.2': '第3ディスク',
     'wheel.name.3': 'ドライビングディスク',
-    'wheel.offset': '{name} {o}'
+    'wheel.offset': '{name} {o}',
+    'learn.lock.title': '施錠のときに右へ4回転以上回す理由',
+    'learn.lock.desc1': '扉を閉めただけでは、4つのゲートは揃ったままです。番号を知らなくても、鍵だけで開いてしまいます。',
+    'learn.lock.desc2': '金庫の取扱説明書には、施錠のあとダイヤルを右に4回転以上回すように書かれているものがあります（回さないと番号合わせが容易になり、開けられやすくなる）。'
+      + 'シミュレーターでは、開けたあと「閉める」で確かめられます。',
+    'learn.combo.title': '組み合わせの数',
+    'learn.combo.desc1': '番号は4つで、名目の組み合わせは100⁴＝1億通りです。ただし、正規の手順で開けられる番号には条件があります。'
+      + 'たとえば2番目の番号が1番目に近すぎると、左3回目で止める前に第1ディスクを拾ってしまいます。',
+    'learn.combo.desc2': '本ツールの模型（ツクの厚み{pin}目盛り）では、前の番号から次の番号まで回す向きに数えた目盛り数の上限が、STEP2で{g2}、STEP3で{g3}、STEP4で{g4}です。'
+      + 'ゲートがぴったり揃う組み合わせは**{count}通り（約{pct}%）**です。また、ゲートは±{tol}目盛りずれても開くので、隣の番号に合わせても開くことがあります。',
+    'practice.new': '🎲 新しい番号で練習',
+    'practice.default': '既定の番号に戻す',
+    'practice.hide': '内部の動きを隠す',
+    'practice.hidden': '内部の動きは隠しています。手順だけで開けてみましょう。',
+    'practice.show': '内部を見る',
+    'practice.started': '新しい番号で練習します。ダイヤルとディスクの初期状態もランダムです。',
+    'practice.back': '既定の番号（94-30-84-13）に戻しました。',
+    'guide.cardPractice': '番号カード（練習）',
+    'sim.notOpenHidden': '開きません。右に4回以上回して、最初からやり直してください。',
+    'btn.close': '🚪 閉める',
+    'sim.closed': '扉を閉めて閂を出しました。施錠の手順では、ここでダイヤルを右に4回転以上回して番号を崩します。',
+    'sim.scrambled': '右に4回転以上回して、番号を崩しました。',
+    'sim.openUnscrambled': 'OPEN：閉めたあと番号を崩していないので、ゲートが揃ったままでした。番号を知らなくても鍵だけで開きます。',
+    'demo.btn6': '⑥ 左から始める（同じ番号）',
+    'demo.head6': '実演⑥：左から始める（左4・右3・左2・右1、同じ番号）',
+    'demo.explain6': '押す側が逆になるので、ゲートがツクの厚みのぶんずれます。この模型で左から始めて開けるには、番号を{left}にずらす必要があります。'
   };
 
   const en = {
@@ -282,7 +307,7 @@
       + 'When pins in rows next to each other touch, the upper disc pushes the lower one and they turn together.',
 
     'demo.title': 'Demonstrations',
-    'demo.lead': 'Turns the model one graduation at a time from the initial state (stopped after turning left).',
+    'demo.lead': 'Turns the model one graduation at a time from the state stopped after turning left.',
     'demo.btn1': '① Correct',
     'demo.btn2': '② Right 5 times (extra)',
     'demo.btn3': '③ Right 3 times (too few)',
@@ -314,7 +339,36 @@
     'wheel.name.1': 'Disc 2',
     'wheel.name.2': 'Disc 3',
     'wheel.name.3': 'Driving disc',
-    'wheel.offset': '{name} {o}'
+    'wheel.offset': '{name} {o}',
+    'learn.lock.title': 'Why turn right 4 or more times when locking',
+    'learn.lock.desc1': 'Just closing the door leaves the four gates lined up. The lock then opens with the key alone, without knowing the combination.',
+    'learn.lock.desc2': 'Some safe manuals say to turn the dial right 4 or more times after locking '
+      + '(otherwise setting the numbers becomes easy and the safe is easier to open). In the simulator, check it with "Close" after opening.',
+    'learn.combo.title': 'How many combinations',
+    'learn.combo.desc1': 'There are four numbers, so there are 100⁴ = 100 million combinations in name. '
+      + 'However, a combination must meet conditions to be opened with the legitimate steps. '
+      + 'For example, if the 2nd number is too close to the 1st, Disc 1 is picked up before you stop on the 3rd time to the left.',
+    'learn.combo.desc2': 'In this tool\'s model (pins {pin} graduations thick), the graduations from one number to the next, counted in the turning direction, '
+      + 'must be at most {g2} in STEP2, {g3} in STEP3 and {g4} in STEP4. **{count} combinations (about {pct}%)** line the gates up exactly. '
+      + 'Also, a gate opens even when it is off by ±{tol} graduation, so a neighboring number can open the lock too.',
+    'practice.new': '🎲 Practice with new numbers',
+    'practice.default': 'Back to the default numbers',
+    'practice.hide': 'Hide the inside of the lock',
+    'practice.hidden': 'The inside of the lock is hidden. Try to open it with the steps alone.',
+    'practice.show': 'Show the inside',
+    'practice.started': 'Practicing with new numbers. The initial state of the dial and discs is random too.',
+    'practice.back': 'Back to the default numbers (94-30-84-13).',
+    'guide.cardPractice': 'Combination card (practice)',
+    'sim.notOpenHidden': 'It does not open. Turn right 4 or more times and start over.',
+    'btn.close': '🚪 Close',
+    'sim.closed': 'Closed the door and the bolt is out. The locking steps now turn the dial right 4 or more times to scramble the numbers.',
+    'sim.scrambled': 'Turned right 4 or more times and scrambled the numbers.',
+    'sim.openUnscrambled': 'OPEN: the numbers were not scrambled after closing, so the gates stayed lined up. '
+      + 'The key alone opens it without knowing the combination.',
+    'demo.btn6': '⑥ Start to the left (same numbers)',
+    'demo.head6': 'Demo 6: starting to the left (L4, R3, L2, R1, same numbers)',
+    'demo.explain6': 'The pushing side is reversed, so the gates are off by the pin thickness. '
+      + 'To open this model starting to the left, the numbers must be shifted to {left}.'
   };
 
   const MESSAGES = { ja, en };

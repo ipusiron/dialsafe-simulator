@@ -119,6 +119,19 @@
         <p data-i18n="learn.why.desc3">右4回目で止めれば、どの状態から始めても3枚とも拾い切れます。続く左3回目では第2ディスクまで、右2回目では第3ディスクまでを動かし、先に合わせたディスクには触れません。最後の左1回目はドライビングディスクだけを動かします。回し過ぎると、合わせたディスクを拾って動かしてしまうので、最初からやり直しです。</p>
         <button type="button" id="go-demo" class="secondary" data-i18n="learn.why.demo">自動実演で動きを見る</button>
       </div>
+
+      <div class="card">
+        <h2 data-i18n="learn.lock.title">施錠のときに右へ4回転以上回す理由</h2>
+        <p data-i18n="learn.lock.desc1">扉を閉めただけでは、4つのゲートは揃ったままです。番号を知らなくても、鍵だけで開いてしまいます。</p>
+        <p data-i18n="learn.lock.desc2">金庫の取扱説明書には、施錠のあとダイヤルを右に4回転以上回すように書かれているものがあります（回さないと番号合わせが容易になり、開けられやすくなる）。シミュレーターでは、開けたあと「閉める」で確かめられます。</p>
+      </div>
+
+      <div class="card">
+        <h2 data-i18n="learn.combo.title">組み合わせの数</h2>
+        <p data-i18n="learn.combo.desc1">番号は4つで、名目の組み合わせは100⁴＝1億通りです。ただし、正規の手順で開けられる番号には条件があります。たとえば2番目の番号が1番目に近すぎると、左3回目で止める前に第1ディスクを拾ってしまいます。</p>
+        <p data-i18n="learn.combo.desc2" data-i18n-vars="pin:4;g2:88;g3:92;g4:96;count:77,721,600;pct:78;tol:1">本ツールの模型（ツクの厚み4目盛り）では、前の番号から次の番号まで回す向きに数えた目盛り数の上限が、STEP2で88、STEP3で92、STEP4で96です。
+          ゲートがぴったり揃う組み合わせは<strong>77,721,600通り（約78%）</strong>です。また、ゲートは±1目盛りずれても開くので、隣の番号に合わせても開くことがあります。</p>
+      </div>
     </section>
 
     <!--シミュレーター-->
@@ -141,13 +154,19 @@
           <div class="key-row">
             <button type="button" id="turn-key" class="primary" data-i18n="btn.key">🔑 鍵を回す</button>
             <button type="button" id="reset" class="secondary" data-i18n="btn.reset">リセット</button>
+            <button type="button" id="close-door" class="secondary" data-i18n="btn.close" hidden>🚪 閉める</button>
           </div>
           <p id="result" class="result" role="status" aria-live="polite" hidden></p>
         </div>
 
         <div class="card guide-card">
           <h2 data-i18n="guide.title">手順ガイド</h2>
-          <h3 data-i18n="guide.card">番号カード</h3>
+          <div class="practice">
+            <button type="button" id="practice-new" class="secondary" data-i18n="practice.new">🎲 新しい番号で練習</button>
+            <button type="button" id="practice-default" class="secondary" data-i18n="practice.default" disabled>既定の番号に戻す</button>
+            <label class="check"><input type="checkbox" id="hide-inner"><span data-i18n="practice.hide">内部の動きを隠す</span></label>
+          </div>
+          <h3 id="guide-card-title" data-i18n="guide.card">番号カード</h3>
           <ol id="guide-steps" class="guide-steps"></ol>
           <p id="guide-status" class="guide-status" role="status" aria-live="polite"></p>
           <p class="hint" data-i18n="guide.note">ガイドは取扱説明書の手順をなぞって回数を数えます。開くかどうかは、ガイドではなくゲートの位置で決まります。</p>
@@ -155,6 +174,11 @@
 
         <div class="card inner-card">
           <h2 data-i18n="inner.title">内部の動き</h2>
+          <div id="inner-hidden" class="inner-hidden" hidden>
+            <p data-i18n="practice.hidden">内部の動きは隠しています。手順だけで開けてみましょう。</p>
+            <button type="button" id="show-inner" class="secondary" data-i18n="practice.show">内部を見る</button>
+          </div>
+          <div id="inner-body">
           <ul class="legend">
             <li><span class="swatch swatch-gate" aria-hidden="true"></span><span data-i18n="inner.legend.gate">ゲート（切り欠き）</span></li>
             <li><span class="swatch swatch-front" aria-hidden="true"></span><span data-i18n="inner.legend.front">ツク（押される側）</span></li>
@@ -163,17 +187,19 @@
           <div id="wheels" class="wheels"></div>
           <p id="fence-status" class="fence-status"></p>
           <p class="hint" data-i18n="inner.note">中央の線がフェンスの位置です。各ディスクの橙色のゲートが線の上に揃うと、フェンスが落ちます。上下に並ぶツクが触れると、上のディスクが下のディスクを押して一緒に回します。</p>
+          </div>
         </div>
 
         <div class="card demo-card" id="demo-card">
           <h2 data-i18n="demo.title">自動実演</h2>
-          <p class="hint" data-i18n="demo.lead">初期状態（左に回して止めた状態）から、模型を実際に1目盛りずつ回します。</p>
+          <p class="hint" data-i18n="demo.lead">左に回して止めた状態から、模型を実際に1目盛りずつ回します。</p>
           <div class="demo-buttons">
             <button type="button" class="demo-btn" data-demo="1" data-i18n="demo.btn1">① 正確な操作</button>
             <button type="button" class="demo-btn" data-demo="2" data-i18n="demo.btn2">② 右に5回（多め）</button>
             <button type="button" class="demo-btn" data-demo="3" data-i18n="demo.btn3">③ 右に3回（不足）</button>
             <button type="button" class="demo-btn" data-demo="4" data-i18n="demo.btn4">④ 最後に左へ2回（回し過ぎ）</button>
             <button type="button" class="demo-btn" data-demo="5" data-i18n="demo.btn5">⑤ STEP2で番号違い</button>
+            <button type="button" class="demo-btn" data-demo="6" data-i18n="demo.btn6">⑥ 左から始める（同じ番号）</button>
           </div>
           <div class="demo-controls">
             <label for="demo-speed" data-i18n="demo.speed">速さ</label>

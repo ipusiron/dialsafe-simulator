@@ -64,6 +64,12 @@ test('学習タブに差し込む値（ツクの厚み・拾い上げまでの�
   const vars = parseVars(html.match(/data-i18n="learn.why.desc2" data-i18n-vars="([^"]+)"/)[1]);
   const [d3, d2, d1] = C.pickupDistances(C.makeLock());
   assert.deepEqual(vars, { pin: String(C.PIN_WIDTH), d3: String(d3), d2: String(d2), d1: String(d1) });
+  // 組み合わせの数の節: 差の上限・ぴったり揃う組の数（3桁区切り）・割合（%、四捨五入）・許容幅
+  const combo = parseVars(html.match(/data-i18n="learn.combo.desc2" data-i18n-vars="([^"]+)"/)[1]);
+  const [g2, g3, g4] = C.gapLimits();
+  const count = C.exactCount();
+  assert.deepEqual(combo, { pin: String(C.PIN_WIDTH), g2: String(g2), g3: String(g3), g4: String(g4), count: count.toLocaleString('en-US'),
+    pct: String(Math.round((100 * count) / 100 ** 4)), tol: String(C.TOLERANCE) });
 });
 
 test('JS は innerHTML・eval を使わず、style を書き換えない（図は SVG の属性で描く）', () => {

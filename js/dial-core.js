@@ -113,6 +113,47 @@
     return [mod(g[0] + 3 * lock.play), mod(g[1]), mod(g[2] + lock.play), mod(g[3])];
   }
 
+  // ===== 番号の条件（正規の手順で、先に合わせたディスクに触れずに開くか） =====
+  // 差は1〜100で数える（同じ番号なら1周後の100）。STEP2〜4で回す量は差＋（必要な回数−1）周なので、
+  // 先に合わせたディスクを拾う手前（遊び×枚数）に収まる差の上限が決まる: STEP2＝3×遊び−200、STEP3＝2×遊び−100、STEP4＝遊び
+  const gap = (x) => mod(x) || N;
+  function combinationGaps(numbers) {
+    const [n1, n2, n3, n4] = numbers;
+    return [gap(n2 - n1), gap(n2 - n3), gap(n4 - n3)];
+  }
+  function gapLimits(pinWidth = PIN_WIDTH) {
+    const play = N - pinWidth;
+    return [3 * play - 2 * N, 2 * play - N, play];
+  }
+  // ゲートがずれずに（ぴったり）揃う番号
+  const isExact = (numbers, pinWidth = PIN_WIDTH) => combinationGaps(numbers).every((g, i) => g <= gapLimits(pinWidth)[i]);
+  // 許容幅の内で開く番号（上限を許容幅だけ越えても、引きずりは許容幅に収まる）
+  const isDialable = (numbers, { pinWidth = PIN_WIDTH, tolerance = TOLERANCE } = {}) =>
+    combinationGaps(numbers).every((g, i) => g <= gapLimits(pinWidth)[i] + tolerance);
+  // ぴったり揃う組み合わせの数（1番目は100通り、2〜4番目は上限の数だけ）
+  const exactCount = (pinWidth = PIN_WIDTH) => gapLimits(pinWidth).reduce((n, limit) => n * limit, N);
+
+  // 練習用の番号は、差が上限から PRACTICE_MARGIN 目盛り以上離れたものに限る。
+  // 上限ぎりぎりの番号は、回す量のわずかな違いで先に合わせたディスクを拾う（例: 差が87〜89だと、右3回で拾い損ねた第1ディスクを
+  // STEP2の左回しがたまたま揃う位置まで押してしまう）
+  const PRACTICE_MARGIN = 3;
+  const isPracticeCombination = (numbers, pinWidth = PIN_WIDTH) =>
+    combinationGaps(numbers).every((g, i) => g <= gapLimits(pinWidth)[i] - PRACTICE_MARGIN);
+
+  // 練習用の番号を、rnd（0以上1未満を返す関数）で選ぶ
+  function randomCombination(rnd, pinWidth = PIN_WIDTH) {
+    for (;;) {
+      const numbers = [0, 1, 2, 3].map(() => Math.floor(rnd() * N));
+      if (isPracticeCombination(numbers, pinWidth)) return numbers;
+    }
+  }
+
+  // 練習用: 指標の数字と、3枚の遊び（0〜遊び）をランダムに選んだ初期状態
+  function randomState(lock, rnd) {
+    const reading = Math.floor(rnd() * N);
+    return createState(lock, reading, [0, 1, 2].map(() => Math.floor(rnd() * (lock.play + 1))));
+  }
+
   // ===== 手順ガイド（取扱説明書の手順をなぞり、回数を数える。開くかどうかは模型のゲートの位置だけで決まる） =====
   // status: start（右から始める）・turning（回している）・ready（この番号で向きを変える／STEP4なら鍵を回す）・
   //         past（STEP1で4回目を過ぎた。もう一度右へ回して合わせる）・over（回し過ぎ）・restart（向きを変えた所が違う）・wrongStart（左から始めた）
@@ -164,7 +205,10 @@
   }
 
   // ===== 自動実演（模型を実際に1目盛りずつ回す） =====
-  // start: 'left'＝左に回して止めた状態（3枚とも左側でツクが当たる。シミュレーターの初期状態と同じ）
+  // 始まりは、左に回して止めた状態（3枚とも左側でツクが当たる）で、指標が1番目の番号＋6の所。
+  // 既定の番号では指標0＝シミュレーターの初期状態と同じ。どの番号でも、③右3回は第1ディスクを拾い切れない（206目盛り＜289）
+  const demoStart = (lock) => createState(lock, lock.numbers[0] + 6);
+
   function demoPlans(lock) {
     const [n1, n2, n3, n4] = lock.numbers;
     return [
@@ -172,7 +216,8 @@
       { id: 2, plan: [['R', n1, 5], ['L', n2, 3], ['R', n3, 2], ['L', n4, 1]] },
       { id: 3, plan: [['R', n1, 3], ['L', n2, 3], ['R', n3, 2], ['L', n4, 1]] },
       { id: 4, plan: [['R', n1, 4], ['L', n2, 3], ['R', n3, 2], ['L', n4, 2]] },
-      { id: 5, plan: [['R', n1, 4], ['L', mod(n2 + 20), 3], ['R', n3, 2], ['L', n4, 1]] }
+      { id: 5, plan: [['R', n1, 4], ['L', mod(n2 + 20), 3], ['R', n3, 2], ['L', n4, 1]] },
+      { id: 6, plan: [['L', n1, 4], ['R', n2, 3], ['L', n3, 2], ['R', n4, 1]] }
     ];
   }
 
@@ -213,6 +258,8 @@
   globalThis.DialCore = {
     N, PIN_WIDTH, TOLERANCE, COMBINATION, PROCEDURE, PIN_FROM_GATE,
     mod, signed, opposite, makeLock, createState, step, reading, slack, offsets, isOpen, dialTo, runPlan, correctPlan,
-    pickupDistances, leftStartNumbers, createGuide, updateGuide, demoPlans, view, xorshift32
+    pickupDistances, leftStartNumbers, createGuide, updateGuide, demoPlans, view, xorshift32,
+    combinationGaps, gapLimits, isExact, isDialable, exactCount, PRACTICE_MARGIN, isPracticeCombination, randomCombination, randomState,
+    demoStart
   };
 })();

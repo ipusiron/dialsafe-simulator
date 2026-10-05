@@ -15,7 +15,9 @@ const DOCS = {
     shots: /^assets\/screenshot\d*\.png$/,
     sec: { model: '🔬 模型の仕組みと検算', tree: '📁 ディレクトリー構造', about: '🛠️ このツールについて' },
     head: '操作',
-    claims: ['97・193・289目盛り', '82-38-80-13', '2,000通り', '0〜96目盛り', '±1目盛り', '94-30-84-13', '3.0%', 'ツクの厚み4'],
+    claims: ['97・193・289目盛り', '82-38-80-13', '2,000通り', '0〜96目盛り', '±1目盛り', '94-30-84-13', '3.0%', 'ツクの厚み4',
+      'STEP2は88（3×96−200）、STEP3は92（2×96−100）、STEP4は96', '100×88×92×96＝77,721,600通り', '約78%', '（89・93・97）',
+      '3目盛り以上の余裕', '目盛り数は36・46・29', '1,900組'],
     forbidden: /チャレンジ|ドラッグ操作は無効|AUTO_UNLOCK|自動開錠|100万通り（100⁴）|ブラウザ(?!ー)|内部ディスクの番号|10 - 40 - 70 - 20|将来の改善/
   },
   en: {
@@ -24,7 +26,8 @@ const DOCS = {
     sec: { model: '🔬 How the model works and how it was checked', tree: '📁 Directory structure', about: '🛠️ About this tool' },
     head: 'Dialing',
     claims: ['97, 193 and 289 graduations', '82-38-80-13', '2,000 random initial states', '0–96 graduations', '±1 graduation', '94-30-84-13', '3.0%',
-      'pin thickness 4'],
+      'pin thickness 4', '88 in STEP2 (3×96−200), 92 in STEP3 (2×96−100) and 96 in STEP4', '100×88×92×96 = 77,721,600 combinations', 'about 78%',
+      '(89, 93, 97)', 'at least 3 graduations of margin', 'has 36, 46 and 29 graduations', '1,900 combinations'],
     forbidden: /Challenge|CHALLENGE|AUTO_UNLOCK|Auto Unlock|1 million|Future Improvements|Drive Cam/
   }
 };
@@ -132,6 +135,14 @@ for (const [lang, d] of Object.entries(DOCS)) {
     assert.deepEqual(C.pickupDistances(lock), [97, 193, 289]);
     assert.deepEqual(left, [82, 38, 80, 13]);
     assert.equal(rates[2], '97.0%');
+    // 開けられる番号の条件（差の上限・組の数・許容幅で開く上限・練習の余裕・既定の番号の差）
+    assert.deepEqual(C.gapLimits(), [88, 92, 96]);
+    assert.deepEqual(C.gapLimits().map((g, i) => [3 * lock.play - 200, 2 * lock.play - 100, lock.play][i] === g), [true, true, true]);
+    assert.equal(C.exactCount(), 77721600);
+    assert.equal(Math.round((100 * C.exactCount()) / 1e8), 78);
+    assert.deepEqual(C.gapLimits().map((g) => g + C.TOLERANCE), [89, 93, 97]);
+    assert.equal(C.PRACTICE_MARGIN, 3);
+    assert.deepEqual(C.combinationGaps(C.COMBINATION), [36, 46, 29]);
   });
 
   test(`${d.file}: ディレクトリー構造にすべてのファイルとディレクトリーが載り、全行に説明がある`, () => {
@@ -152,13 +163,13 @@ for (const [lang, d] of Object.entries(DOCS)) {
   });
 }
 
-test('画像: 参照はすべて実在する。スクリーンショットは日本語版が assets/、英語版が assets/en/ の5枚。どこからも参照しない画像は置かない', () => {
+test('画像: 参照はすべて実在する。スクリーンショットは日本語版が assets/、英語版が assets/en/ の7枚。どこからも参照しない画像は置かない', () => {
   const refs = {};
   for (const [lang, d] of Object.entries(DOCS)) {
     refs[lang] = [...d.text.matchAll(/!\[[^\]]*\]\((assets\/[^)]+)\)/g)].map((m) => m[1]);
     for (const r of refs[lang]) assert.ok(fs.existsSync(path.join(ROOT, r)), r);
     const shots = refs[lang].filter((r) => /screenshot/.test(r));
-    assert.equal(shots.length, 5, lang);
+    assert.equal(shots.length, 7, lang);
     for (const r of shots) {
       assert.match(r, d.shots, r);
       assert.ok(fs.statSync(path.join(ROOT, r)).size <= 300 * 1024, r);

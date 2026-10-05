@@ -35,7 +35,7 @@ test('画面のスクリプトが使うキーは、すべて辞書にある（�
   const src = ['js/script.js', 'js/theme.js'].map(read).join('\n');
   for (const m of src.matchAll(/\bt\('([a-z]+\.[A-Za-z0-9.]+)'/g)) assert.ok(MESSAGES.ja[m[1]] !== undefined, m[1]);
   for (const i of [1, 2, 3, 4]) assert.ok(MESSAGES.ja[`guide.step${i}`], i);
-  for (const i of [1, 2, 3, 4, 5]) for (const p of ['demo.head', 'demo.explain', 'demo.btn']) assert.ok(MESSAGES.ja[`${p}${i}`], `${p}${i}`);
+  for (const i of [1, 2, 3, 4, 5, 6]) for (const p of ['demo.head', 'demo.explain', 'demo.btn']) assert.ok(MESSAGES.ja[`${p}${i}`], `${p}${i}`);
   for (const i of [0, 1, 2, 3]) for (const p of ['wheel.name.', 'inner.wheel.']) assert.ok(MESSAGES.ja[`${p}${i}`], `${p}${i}`);
 });
 

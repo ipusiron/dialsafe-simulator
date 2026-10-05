@@ -5,14 +5,15 @@ import { core } from './load.js';
 const C = core();
 const lock = C.makeLock();
 
-// 自動実演は、シミュレーターの初期状態（左に回して止めた状態）から模型を実際に回す
+// 自動実演は、左に回して止めた状態（既定の番号ではシミュレーターの初期状態と同じ）から模型を実際に回す
 const results = Object.fromEntries(C.demoPlans(lock).map((d) => {
-  const r = C.runPlan(lock, C.createState(lock), d.plan);
+  const r = C.runPlan(lock, C.demoStart(lock), d.plan);
   return [d.id, { open: C.isOpen(lock, r.state), offsets: C.offsets(lock, r.state), segments: r.segments }];
 }));
 
-test('実演①正確・②右5回は開き、③右3回・④最終ステップの回し過ぎ・⑤番号違いは開かない', () => {
-  assert.deepEqual(Object.values(results).map((r) => r.open), [true, true, false, false, false]);
+test('実演①正確・②右5回は開き、③右3回・④最終ステップの回し過ぎ・⑤番号違い・⑥左始動は開かない', () => {
+  assert.deepEqual(Object.values(results).map((r) => r.open), [true, true, false, false, false, false]);
+  assert.deepEqual(C.demoStart(lock), C.createState(lock));
 });
 
 test('開かない実演では、ずれるディスクが手順の説明どおり', () => {
@@ -23,6 +24,8 @@ test('開かない実演では、ずれるディスクが手順の説明どお�
   assert.deepEqual(results[4].offsets, [0, 0, 33, 0]);
   // ⑤STEP2を20ずらすと、第2ディスクのゲートが20ずれる
   assert.deepEqual(results[5].offsets, [0, 20, 0, 0]);
+  // ⑥左から始めると、押す側が逆になり、ツクの厚み（4）のぶんずれる（第1＋12・第2−8・第3＋4）
+  assert.deepEqual(results[6].offsets, [12, -8, 4, 0]);
 });
 
 test('実演①の各段の目盛り数（右306・左236・右146・左29）。正規の手順では STEP4 は1回転以内', () => {
