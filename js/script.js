@@ -314,7 +314,7 @@
       d.timer = setTimeout(tick, speed.delay);
       return;
     }
-    app.log.push({ key: 'demo.segment', vars: { moves: seg.moves, n: pad2(seg.number), k: seg.arrivals }, dir: seg.dir });
+    app.log.push({ key: 'demo.segment', vars: { s: d.seg + 1, moves: seg.moves, n: pad2(seg.number), k: seg.arrivals }, dir: seg.dir });
     renderLog();
     d.seg++;
     d.done = 0;

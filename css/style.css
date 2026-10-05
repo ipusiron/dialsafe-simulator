@@ -411,12 +411,12 @@ select {
   border-radius: var(--radius-sm);
 }
 
-.demo-log { margin: 12px 0 0; padding-left: 1.4em; font-size: 14px; max-height: 360px; overflow-y: auto; }
+.demo-log { margin: 12px 0 0; padding: 0; list-style: none; font-size: 14px; max-height: 360px; overflow-y: auto; }
 .demo-log li { margin: 4px 0; }
-.demo-log li.head { font-weight: 700; list-style: none; margin-left: -1.4em; }
+.demo-log li.head { font-weight: 700; }
 .demo-log li.ok { color: var(--ok-text); font-weight: 600; }
 .demo-log li.fail { color: var(--contact); font-weight: 600; }
-.demo-log li.explain { list-style: none; margin-left: -1.4em; color: var(--muted); }
+.demo-log li.explain { color: var(--muted); }
 
 /* ===== フッター・知らせ ===== */
 .footer {
