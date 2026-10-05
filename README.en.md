@@ -255,6 +255,97 @@ The graduations from one number to the next, counted in the turning direction (a
 
 ---
 
+## 🌏 Dial locks around the world (mechanisms, standards, history, trivia)
+
+This tool models the 4-disc fixed dial lock common in Japanese home fire-resistant safes. Safe dial locks share the same basics (discs with gates and a fence), but the direction you start, what draws the bolt, how the combination is changed and the certification standards differ by country and use. This section collects what was checked against papers, patents, and materials from manufacturers and public bodies, among others. Sources are shown by the reference numbers at the end of the section. Where sources disagree, the text says whose account it is. Techniques for defeating locks are not covered.
+
+### Japan's 4-disc lock vs. US safe locks
+
+The "standard" design among US safe locks (UL Group 2) is the Sargent & Greenleaf (S&G) model R6730. The Kaba-Ilco model 673 and the LaGard model 3330 use a virtually identical design [1].
+
+| Item | This tool's model (Japanese 4-disc, fixed conversion) | US UL Group 2 lock (R6730 and others) |
+|---|---|---|
+| Numbers | 4 | 3 (4-wheel models also exist) |
+| First direction | Right (clockwise) | Left (counterclockwise) |
+| Steps | Right 4 times, left 3 times, right 2 times, left once | Left 4 times, right 3 times, left 2 times, then right until it stops |
+| What draws the bolt | The key (the dial only clears the way for the fence to drop) | The dial (the lever nose drops into the drive cam gate, and turning further right retracts the bolt) |
+| Changing the combination | Not possible (fixed conversion) | Through the change key hole on the back of the lock |
+
+- Sources: [1, 6] for the US column, and the section "Fixed dial lock basics" above and the KOKUYO manual [15] for this tool's column
+- Comparing the structures, this tool's fourth number (aligning the driving disc gate) corresponds to the US lock's last step of turning right until the lever drops into the cam gate. This is this section's interpretation, not a statement from the sources
+- On a US lock, the wheel (disc) directly behind the cam picks up first but corresponds to the last number, so it is called wheel N (wheel 3 on a 3-wheel lock) [1]. It is the same relationship as this tool's Disc 3, which starts moving first at 97 graduations and is set by the third number
+- The order of the parts depends on the manufacturer: S&G, Kaba-Ilco and LaGard put the drive cam farthest from the dial, while Mosler puts it nearest (between the dial and the wheels) [1]
+- The Kaba-Ilco 673 wheel has a movable fly that rotates within a fixed range before moving the next wheel, so the same number can be dialed from either direction [1]. This tool's pins are fixed, so starting to the left, as in demonstration 6, shifts the gates by the pin thickness
+- The R6730 dial has two index marks. The main one at 12 o'clock is for dialing; the small one at 11 o'clock is used only when setting a new combination [1]
+- Wheels of locks whose combination can be changed are a three-layer "sandwich", and the combination is changed through the change key hole on the back of the lock [1]
+- On US locks, the last number has a "forbidden zone": numbers that would put the last wheel's gate too close to the cam gate cannot be used [1]. Japanese free-conversion dial locks (one-million conversion) let you change only the top 3 of the 4 discs, and the last number is fixed at 8 [18]
+- Keyed safe locks (usually lever tumbler) are said to be more common in Europe and elsewhere than in the US [1]
+
+### Standards and the number of combinations
+
+- On a 100-graduation dial, the nominal count is 100³ (1,000,000 combinations) for 3 numbers and 100⁴ (100,000,000 combinations) for 4 numbers [1]
+- Real locks allow a dialing tolerance of ±0.75 to ±1.25 graduations per number, so the 100 marked positions may come down to as few as 40 mechanically distinct ones. With part of the range unusable for the last number, a 3-number lock has 51,200 to 242,406 effective combinations [1]. This tool's tolerance is ±1 graduation
+- Under the US UL standard, Group 2 requires at least 1,000,000 combinations and a tolerance of at most ±1.25; Group 1 requires resisting expert manipulation (finding the numbers from the feel of the dial) for at least 20 hours; Group 1R also requires resisting X-ray inspection, which Group 1R locks meet with plastic wheels [1, 7]
+- The European standard EN 1300 sorts high security locks, mechanical and electronic, into four classes from A to D [14]. According to the 2004 paper, CEN Class A and German VdS Class 1 require at least 80,000 usable combinations [1]
+- One lock may carry certifications from several countries. In the S&G 6700 series, the 3-wheel 6730 and 6741 hold UL Group 2, VdS Class 1 and CEN A, and the 4-wheel 6731 holds VdS Class 2 and CEN B. The 6741 also holds the French CNPP A2P, and the 6730 and 6741 the Chinese CCC [6]. In this series, the 4-wheel lock holds the higher classes
+- Tolerance is a trade-off between security and ease of dialing. S&G's former product pages list the 6730 at ±0.5 graduations "for increased security" and the 6741 at ±1.25 "to make it easier to dial open" [7]
+- Manufacturers recommend avoiding combinations that steadily increase or decrease, or that have adjacent numbers too close together. The 2004 paper points out that under these guidelines, only 111,139 of the R6730's 282,807 usable combinations count as "good" [1]. As with this tool's "Conditions for a combination that opens" (about 78% of nominal), the nominal count and the usable count differ
+- As an example of a Japanese fire-resistant safe, the KOKUYO manual shows fire resistance with a test based on JIS S 1037 (heated up to 927°C for one hour, with the inside kept at 177°C or below). The same manual states that a fire-resistant safe is meant to protect against fire and does not withstand destruction with tools, and that its useful life is 20 years from manufacture [15]
+- As of the 2004 paper, GSA containers for US Department of Defense classified materials had dropped mechanical locks, and only electromechanical locks were approved [1]
+
+### History (timeline)
+
+| Year | Event | Sources |
+|---|---|---|
+| 18th century | A British brass letter combination lock that can be set to any 4-letter word (Science Museum Group, 1968-704) | [12] |
+| 1857 | James Sargent founds his company and makes Sargent's Magnetic Bank Lock, which the company describes as "the first key-changeable combination lock". The U.S. Treasury Department adopts it as its standard in 1860 | [5] |
+| 1862 | Linus Yale Jr.'s Monitor Bank Lock, which Yale describes as marking the transition in bank locks from key locks to dial locks. Keyholes were a weakness that thieves breached with picks or explosives | [8, 9] |
+| 1863 | Yale's Double Dial, with two 100-number dials, which could be set to open with either combination or to require both. It won a silver medal at the Paris Exposition of 1867 | [11] |
+| 1865 | Sargent and Halbert Greenleaf start Sargent & Greenleaf in Rochester, New York | [5] |
+| Late 1860s | A series of robberies in which bank managers were kidnapped and made to open the safe spreads the use of time locks. Time locks themselves existed as early as 1831 | [11] |
+| 1868 | Yale Jr. dies on December 25 at 47 | [10, 11] |
+| 1870 | U.S. Patent 98,536, "permutation-locks", issued in the name of the administrator of the late Yale Jr. Its object is a small, unpickable and comparatively low-priced safe or bank lock; on doors filled with plaster or alum, the working parts can be removed for cleaning or changing the combination without disturbing the filling | [2] |
+| 1874 | Sargent personally installs a time lock built with two 8-day kitchen clocks on the vault door of the First National Bank of Morrison, Illinois. It was used for nearly 40 years | [5] |
+| 1875 | Sargent's U.S. Patent 165,878, "time-locks". Locks opened by a combination or key can be opened by forcing their holders, so a time lock is combined with them and the door bolts cannot be withdrawn until both are unlocked | [3] |
+| 1880 | Sargent's Time Combination Lock, which stays locked for a set time even after the combination is dialed | [5] |
+| 1929 | The Mitsui Main Building (an Important Cultural Property) in Nihonbashi, Tokyo, is rebuilt. Its first basement holds a large vault by the American Mosler company (2.5 m in diameter, 55 cm thick, 50 t) | [17, 19] |
+| 1935 | Master Lock (founded 1921) introduces its first combination lock | [13] |
+| 2004 | Computer scientist Matt Blaze publishes "Safecracking for the computer scientist", a survey of safe locks from a computer science perspective | [1] |
+
+### Trivia
+
+- Sargent made his name by introducing, around the same time, the Micrometer, a device that could crack the best combination locks of its day, and the Magnetic lock, which resisted it [7, 11]. How the device worked is not covered by this tool
+- 19th-century US patents called dial locks "permutation-locks". The 1870, 1871 and 1874 patents are all titled "Improvement in permutation-locks", and the text of the 1874 patent also calls the same lock a "Combination-Lock" [2, 4]
+- The 1875 time lock patent places the weakness of locks opened by a combination or key not in the mechanism but in people: whoever holds the combination or key can be forced to open it, so such locks are not a perfect safeguard against robbery [3]. According to the ALSOK article, bank safes have two locks whose combinations are held separately by two people; the stated aim there is preventing misconduct by a single person [18]
+- In physicist Feynman's memoir "Surely You're Joking, Mr. Feynman!", the chapter "Safecracker Meets Safecracker" describes Mosler filing cabinet locks at Los Alamos that were dialed left, right and left, then right to ten to draw back the bolt, and tells that many locks were still on their factory-set combinations [20]. As with default passwords, a lock whose combination can be changed should have it changed when you receive it
+- Japanese free-conversion dial locks all have 8 as the last number, and the ALSOK article guesses this comes from the lucky "suehirogari no hachi" (eight, which widens toward the end) [18]
+- A British Chubb safe at a safe and key museum in Tokyo (Kinko to Kagi no Hakubutsukan), used in Japan from about 1955 to 1964, has a dial with 100,000,000 combinations and a mechanism in which, if the lock is broken, a kite string snaps, a weight drops and the bolt can no longer move [16]. Mechanisms like this that detect an attack and stop the bolt are called relockers, and many safes have them [1]
+
+### References
+
+1. Matt Blaze, "Safecracking for the computer scientist", University of Pennsylvania, draft, 2004 (Revised 21 December 2004) — [mattblaze.org/papers/safelocks.pdf](https://www.mattblaze.org/papers/safelocks.pdf)
+2. US Patent 98,536, "Improvement in permutation-locks", January 4, 1870 (Silas N. Brooks, administrator of Linus Yale Jr., deceased) — [Google Patents](https://patents.google.com/patent/US98536A/en)
+3. US Patent 165,878, "Improvement in time-locks", July 20, 1875 (James Sargent) — [Google Patents](https://patents.google.com/patent/US165878A/en)
+4. US Patent 114,510, "Improvement in permutation-locks", May 9, 1871 (James T. Adams), and US Patent 153,744, same title, August 4, 1874 (Joseph Cassino) — [Google Patents (114,510)](https://patents.google.com/patent/US114510A/en), [Google Patents (153,744)](https://patents.google.com/patent/US153744A/en)
+5. Sargent & Greenleaf, "About" (The Sargent and Greenleaf Timeline) — [sargentandgreenleaf.com/about/](https://sargentandgreenleaf.com/about/)
+6. Sargent & Greenleaf, "Model 6730, 6731, 6741 Group 2 Mechanical Safe Lock" — [sargentandgreenleaf.com/product/6700-series/](https://sargentandgreenleaf.com/product/6700-series/)
+7. Sargent & Greenleaf, "Company History" and "Mechanical Combination Locks" on the former site — [Company History](https://ftp.sargentandgreenleaf.com/companyHistory.php), [Mechanical Combination Locks](https://ftp.sargentandgreenleaf.com/MN-mechCombo.php)
+8. Yale, "History of Yale" — [yalehome.co.uk/history-of-yale/](https://yalehome.co.uk/history-of-yale/)
+9. ASME, "Linus Yale, Jr." — [asme.org](https://www.asme.org/topics-resources/content/linus-yale-jr)
+10. National Inventors Hall of Fame, "Linus Yale, Jr." — [invent.org](https://www.invent.org/inductees/linus-yale-jr)
+11. Anne Day, David Erroll, "The Glory of American Locks", Invention & Technology, Vol. 22, Issue 2, Fall 2006 — [inventionandtech.com](https://www.inventionandtech.com/content/glory-american-locks-0)
+12. Science Museum Group, "Brass puzzle combination lock, 1700-1800" (1968-704) — [collection.sciencemuseumgroup.org.uk](https://collection.sciencemuseumgroup.org.uk/objects/co50412/brass-puzzle-combination-lock-1700-1800)
+13. Master Lock, "About Us" — [masterlock.com/about-us](https://www.masterlock.com/about-us)
+14. BSI, "Secure storage units. Classification for high security locks according to their resistance to unauthorized opening" (EN 1300) — [knowledge.bsigroup.com](https://knowledge.bsigroup.com/products/secure-storage-units-classification-for-high-security-locks-according-to-their-resistance-to-unauthorized-opening)
+15. KOKUYO, manual for the HS-SC355 fire-resistant safe with dial lock (in Japanese) — [kokuyo.com](https://www.kokuyo.com/sites/default/files/assets/pdf/support/manual-furniture/hs-sc355_dial.pdf)
+16. ALSOK, "Kagi Monogatari vol.5" on a Chubb safe (in Japanese) — [alsok.co.jp](https://www.alsok.co.jp/person/recommend/always/key/key05.html)
+17. ALSOK, "Kagi Monogatari vol.11" on a Mosler safe (in Japanese) — [alsok.co.jp](https://www.alsok.co.jp/person/recommend/always/key/key11.html)
+18. ALSOK, "Kagi Monogatari vol.12" on free-conversion dial locks (in Japanese) — [alsok.co.jp](https://www.alsok.co.jp/person/recommend/always/key/key12.html)
+19. Chuo City, Tokyo, "Mitsui Main Building" (in Japanese) — [city.chuo.lg.jp](https://www.city.chuo.lg.jp/a0052/bunkakankou/rekishi/kunibunkazai/021201.html)
+20. Richard P. Feynman, "Surely You're Joking, Mr. Feynman!", W. W. Norton, 1985, "Safecracker Meets Safecracker"
+
+---
+
 ## 🎯 Use cases
 
 - Classes and training: in physical security or mechanism classes, show with the moving model that the counts in the steps come from picking up the discs one at a time
@@ -289,6 +380,7 @@ This tool is for learning legitimate operation and is not intended for opening o
 - The target is the 4-disc fixed dial lock that starts to the right. Variable conversion types, electronic locks and types that start to the left are not covered
 - Techniques for defeating locks (such as finding numbers from the feel of the dial) are not covered
 - Demonstration 3 starts from the state stopped after turning left. Depending on the initial state, right 3 times can also open the lock
+- The section "Dial locks around the world" summarizes what the sources say. For the specifications and procedures of a given model, the manufacturer's materials and manual are authoritative
 
 ---
 
@@ -305,6 +397,7 @@ npm test
 - The review (how turns are merged, the discs moved by each turn, the turn that last moved a disc that is off), the disc where the fence stops, and practice numbers (the same number gives the same problem; number 1 is fixed)
 - index.html CSP, ARIA, image alt text and agreement with the dictionary, the Japanese and English dictionaries, language selection, color contrast (text 4.5:1 and graphics 3:1 or more, in light and dark), and line length
 - The tables and numbers in both READMEs (the 2,000-state rates, graduation counts, numbers for starting left), the directory tree and the images are also checked against the implementation
+- In the section "Dial locks around the world", the source URLs, reference numbers and table rows match between Japanese and English, and every reference number cited in the text is in the reference list
 
 ---
 

@@ -30,11 +30,11 @@ All scripts are plain (non-module) scripts so that the page works from `file://`
 - `test/combination.test.js`: combination conditions against the model (1,900 combinations), practice numbers and start states
 - `test/review.test.js`: merging the record, the review of turns and blame, the fence window and stop, practice numbers
 - `test/html.test.js`, `test/messages.test.js`, `test/i18n.test.js`, `test/contrast.test.js`, `test/format.test.js`: CSP and markup, static text equals the dictionary, dictionaries, language choice, contrast (text 4.5:1, graphics 3:1), 44px buttons, line length and LF
-- `test/readme.test.js`: both READMEs (same headings), YAML structure, the model table and numbers recomputed from the core, directory tree, images (9 screenshots each, no unreferenced images)
+- `test/readme.test.js`: both READMEs (same headings), YAML structure, the model table and numbers recomputed from the core, directory tree, images (9 screenshots each, no unreferenced images), and the "world dial locks" section (same source URLs, reference numbers and table rows in ja/en; every cited number is listed)
 
 ## Key Implementation Notes
 
 - Never use `innerHTML` or inline styles; draw with SVG attributes
 - Do not decide opening from the guide; only `isOpen` (gate offsets) decides
-- README numbers are recomputed by tests — update them from the core, not by hand. README states only what is true for the current version
+- README numbers are recomputed by tests — update them from the core, not by hand. README states only what is true for the current version. The "world dial locks" section only states what was checked against sources (fact-check table in the ipusiron-work research notes); no techniques for defeating locks, no factory default combinations
 - Japanese strings do not put half-width spaces between Japanese and alphanumeric characters

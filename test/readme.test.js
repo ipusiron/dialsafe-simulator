@@ -163,6 +163,41 @@ for (const [lang, d] of Object.entries(DOCS)) {
   });
 }
 
+const WORLD = { ja: '🌏 世界のダイヤル錠（仕組み・規格・歴史・雑学）', en: '🌏 Dial locks around the world (mechanisms, standards, history, trivia)' };
+const WORLD_HEAD = { ja: ['項目', '年'], en: ['Item', 'Year'] };
+const WORLD_NUMBERS = ['1,000,000', '100,000,000', '51,200', '242,406', '80,000', '282,807', '111,139', '98,536', '165,878', '114,510', '153,744',
+  '927', '177', '1968-704'];
+
+test('世界のダイヤル錠の節: 日英で出典の URL・参考文献の番号・表の行がそろい、本文の出典番号はすべて参考文献にある。工場出荷時の番号の値は書かない', () => {
+  const sec = Object.fromEntries(Object.entries(DOCS).map(([lang, d]) => [lang, section(d.text, WORLD[lang])]));
+  const urls = (s) => [...s.matchAll(/\]\((https?:\/\/[^)]+)\)/g)].map((m) => m[1]);
+  assert.deepEqual(urls(sec.en), urls(sec.ja));
+  for (const u of urls(sec.ja)) assert.match(u, /^https:\/\//, u);
+  const years = {};
+  for (const [lang, s] of Object.entries(sec)) {
+    const refs = [...s.matchAll(/^(\d+)\. /gm)].map((m) => Number(m[1]));
+    assert.deepEqual(refs, Array.from({ length: 20 }, (_, i) => i + 1), lang);
+    const cited = new Set([...s.matchAll(/\[(\d+(?:, \d+)*)\]/g)].flatMap((m) => m[1].split(', ').map(Number)));
+    for (const n of refs) assert.ok(cited.has(n), `${lang}: 本文で引用していない [${n}]`);
+    for (const n of cited) assert.ok(refs.includes(n), `${lang}: 参考文献にない [${n}]`);
+    for (const n of WORLD_NUMBERS) assert.ok(s.includes(n), `${lang}: ${n}`);
+    const [diff, timeline] = WORLD_HEAD[lang].map((h) => table(s, h));
+    assert.equal(diff.length, 5, lang);
+    years[lang] = timeline;
+  }
+  // 年表: 行の数・年・出典が日英でそろい、年は古い順
+  assert.equal(years.ja.length, years.en.length);
+  assert.deepEqual(years.ja.map((r) => r[2]), years.en.map((r) => r[2]));
+  const numeric = years.ja.map((r) => r[0]).filter((y) => /^\d{4}$/.test(y)).map(Number);
+  assert.deepEqual(numeric, years.en.map((r) => r[0]).filter((y) => /^\d{4}$/.test(y)).map(Number));
+  assert.deepEqual(numeric, [...numeric].sort((a, b) => a - b));
+  // 名目の数（100目盛り・3番号と4番号）と許容幅の比較は本ツールの値と矛盾しない
+  assert.equal(100 ** 3, 1000000);
+  assert.equal(100 ** 4, 100000000);
+  assert.equal(C.TOLERANCE, 1);
+  for (const d of Object.values(DOCS)) assert.doesNotMatch(d.text, /25-0-25|50-25-50/);
+});
+
 test('画像: 参照はすべて実在する。スクリーンショットは日本語版が assets/、英語版が assets/en/ の9枚。どこからも参照しない画像は置かない', () => {
   const refs = {};
   for (const [lang, d] of Object.entries(DOCS)) {

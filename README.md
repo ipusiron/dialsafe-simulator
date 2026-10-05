@@ -293,6 +293,97 @@ DialSafe Simulatorは、ダイヤル式金庫の正規の開け方と内部の�
 
 ---
 
+## 🌏 世界のダイヤル錠（仕組み・規格・歴史・雑学）
+
+本ツールの模型は、日本の家庭用耐火金庫に多い4枚座の固定ダイヤル錠です。金庫のダイヤル錠は、ゲートのあるディスクとフェンスという基本は同じでも、回し始める向き、閂を引く仕組み、番号の変え方、認証の規格が、国や用途によって異なります。この節は、論文・特許・メーカーと公的機関の資料などで確かめた内容をまとめています。出典は、節の最後の参考文献の番号で示します。出典どうしで食い違う点は、どの資料の説明かを限定して書いています。破りの手法は扱いません。
+
+### 日本の4枚座と米国の金庫錠の違い
+
+米国の金庫錠（UL Group 2）で「標準」とされるのは、Sargent & Greenleaf（S&G）社のR6730の設計です。Kaba-Ilco社の673やLaGard社の3330も、ほぼ同じ設計です[1]。
+
+| 項目 | 本ツールの模型（日本の4枚座・固定変換） | 米国のUL Group 2の錠（R6730など） |
+|---|---|---|
+| 番号の数 | 4つ | 3つ（4つの型もある） |
+| 最初に回す向き | 右（時計回り） | 左（反時計回り） |
+| 手順 | 右4回・左3回・右2回・左1回 | 左4回・右3回・左2回、最後に右へ止まるまで回す |
+| 閂を引くもの | 鍵（ダイヤルは、フェンスが落ちる道を開けるだけ） | ダイヤル（レバーの先がドライブカムの切り欠きに落ち、さらに右へ回すと閂が引き込まれる） |
+| 番号の変更 | できない（固定変換） | 錠の裏のチェンジキーの穴から変える |
+
+- 出典は、米国の列が[1, 6]、本ツールの列が上の節「固定ダイヤル錠の基礎」とコクヨの取扱説明書[15]です
+- 構造を見比べると、本ツールの4番目の番号（ドライビングディスクのゲートを合わせる）は、米国の錠の「最後に右へ回して、カムの切り欠きにレバーを落とす」操作にあたります。これは出典の記述ではなく、この節の解釈です
+- 米国の錠では、カムの真後ろのホイール（ディスク）は最初に拾われるのに、最後の番号に当たるので「ホイールN」（3枚なら3番目）と呼びます[1]。本ツールの第3ディスクが97目盛りで最初に動き出し、3番目の番号で合わせるのと同じ関係です
+- 部品の並びはメーカーで違い、S&G・Kaba-Ilco・LaGardはドライブカムがダイヤルから一番奥、モスラー社は一番手前（ダイヤルとホイールのあいだ）です[1]
+- Kaba-Ilco 673のホイールには、決まった範囲だけ遊んでから隣のホイールを回す「可動フライ」があり、同じ番号を左右どちらから回しても合わせられます[1]。本ツールのツクは固定なので、自動実演⑥のように左から始めると、ツクの厚みのぶんゲートがずれます
+- R6730のダイヤルには指標が2つあります。12時の指標で番号を合わせ、11時の小さい指標は新しい番号を設定するときだけ使います[1]
+- 番号を変えられる錠のホイールは3層の「サンドイッチ」で、錠の裏のチェンジキーの穴から番号を変えます[1]
+- 米国の錠では、最後の番号に「禁止域」があり、最後のホイールのゲートがカムの切り欠きに近すぎる番号は使えません[1]。日本製の自由変換ダイヤル錠（百万変換）は、4枚のうち上3枚だけを変えられ、最後の番号は8に固定です[18]
+- 鍵式（レバータンブラー）の金庫錠は、米国より欧州などで多く使われているとされます[1]
+
+### 規格と番号の数
+
+- 名目の数は、ダイヤルが100目盛りなら、3番号で100³（1,000,000通り）、4番号で100⁴（100,000,000通り）です[1]
+- 実際の錠は、1つの番号に±0.75〜±1.25目盛りの許容幅があり、100の目盛りのうち機械的に区別できる位置は40ほどまで減ることがあります。最後の番号に使えない範囲もあるため、3番号の錠の実質は51,200〜242,406通りです[1]。本ツールの許容幅は±1目盛りです
+- 米国のUL規格では、Group 2は100万通り以上で許容幅±1.25以内、Group 1は熟練者がダイヤルの手応えから番号を探る攻撃（マニピュレーション）に20時間以上耐えること、Group 1Rはさらにエックス線の透視に耐えることが求められます。Group 1Rの錠は、ホイールを樹脂で作ってこれに応えています[1, 7]
+- 欧州規格EN 1300は、高セキュリティ錠を、機械式・電子式とも、AからDの4クラスに分けます[14]。2004年の論文によれば、CENのClass AとドイツVdSのClass 1は、使える番号が80,000通り以上であることを求めています[1]
+- 1つの錠が各国の認証を取ることもあります。S&Gの6700系では、3枚の6730・6741がUL Group 2・VdS Class 1・CEN Aを、4枚の6731がVdS Class 2・CEN Bを取得しています。6741はフランスのCNPP A2P、6730と6741は中国のCCCも取得しています[6]。この型では、4枚の錠のほうが上のクラスを取っています
+- 許容幅は、安全性と合わせやすさの兼ね合いです。S&Gの旧製品ページでは、6730の許容幅を「安全性を高めるため」±0.5目盛り、6741を「開けやすくするため」±1.25目盛りとしています[7]
+- メーカーは、単調に増える・減る番号や、となりと近すぎる番号を避けるよう勧めています。2004年の論文は、この指針に従うと、R6730で使える282,807通りのうち「よい番号」は111,139通りに減ると指摘しています[1]。本ツールの「開けられる番号の条件」（名目の約78%）と同じく、名目の数と実際に使える数は一致しません
+- 日本の耐火金庫の例として、コクヨの取扱説明書は、耐火性能をJIS S 1037に基づく試験（927℃まで1時間加熱し、庫内を177℃以下に保つ）で示しています。同じ取扱説明書には、耐火金庫は火災から守るためのもので工具による破壊には耐えないこと、有効耐用年数は製造後20年であることも書かれています[15]
+- 2004年の論文の時点で、米国国防総省の機密を保管するGSA規格の容器は機械式の錠をやめ、電気機械式の錠だけが認められていました[1]
+
+### 歴史（年表）
+
+| 年 | できごと | 出典 |
+|---|---|---|
+| 18世紀 | 英国の真鍮製の文字合わせ錠。好きな4文字の単語に設定できる（Science Museum Group所蔵、1968-704） | [12] |
+| 1857 | ジェームズ・サージェントが会社を興し、Sargent's Magnetic Bank Lockを作る。同社は「最初の、鍵で番号を変えられるコンビネーション錠」と説明している。1860年に米国財務省が標準に採用 | [5] |
+| 1862 | ライナス・イェール・ジュニアのMonitor Bank Lock。Yale社は、銀行の錠が鍵からダイヤルへ移る転換点と説明している。鍵穴は、ピッキングや爆薬で破られる弱点だった | [8, 9] |
+| 1863 | イェールのDouble Dial。100目盛りのダイヤルが2つあり、片方の番号でも、両方の番号でも開くように設定できる。1867年のパリ万博で銀メダル | [11] |
+| 1865 | サージェントとハルバート・グリーンリーフが、ニューヨーク州ロチェスターでSargent & Greenleafを始める | [5] |
+| 1860年代後半 | 銀行の支配人を誘拐して金庫を開けさせる強盗が続き、時限錠が広まる。時限錠そのものは1831年にはあった | [11] |
+| 1868 | イェール・ジュニアが12月25日に47歳で亡くなる | [10, 11] |
+| 1870 | イェール・ジュニアの遺産管理人の名で、米国特許98,536「permutation-locks」。目的は、小型で、ピッキングできず、比較的安い金庫・銀行の錠。しっくいやみょうばんを詰めた扉でも、詰め物を崩さずに部品を外して、掃除や番号の変更ができる | [2] |
+| 1874 | サージェントが、8日巻きの台所時計2つを使った時限錠を、イリノイ州モリソンのFirst National Bankの金庫扉に自ら取り付ける。約40年使われた | [5] |
+| 1875 | サージェントの米国特許165,878「time-locks」。番号や鍵で開く錠は、持ち主を脅して開けさせられる。そこで時限錠と組み合わせ、両方が開くまで扉の閂を引けなくする | [3] |
+| 1880 | サージェントのTime Combination Lock。番号を合わせても、決まった時間がたつまで開かない | [5] |
+| 1929 | 東京・日本橋の三井本館（重要文化財）が再建される。地下1階に、米国モスラー社の大金庫（直径2.5m・厚さ55cm・重量50t） | [17, 19] |
+| 1935 | マスターロック社（1921年創業）が、同社初のコンビネーション錠を出す | [13] |
+| 2004 | 計算機科学者マット・ブレイズが、金庫の錠を計算機科学の目で整理した論文「Safecracking for the computer scientist」を公開 | [1] |
+
+### 雑学
+
+- サージェントは、当時の最良のコンビネーション錠を破れる道具「Micrometer」と、それに耐えるMagnetic錠を同じ時期に出して名を上げました[7, 11]。道具の仕組みは、本ツールでは扱いません
+- 19世紀の米国特許では、ダイヤル錠を「permutation-lock（順列錠）」と呼んでいました。1870年・1871年・1874年の特許の題名はどれも「Improvement in permutation-locks」で、1874年の特許の本文は同じ錠を「Combination-Lock」とも書いています[2, 4]
+- 1875年の時限錠の特許は、番号や鍵で開く錠の弱点を、錠の仕組みではなく人に見ています。番号や鍵を持つ人を脅せば開けさせられるので、強盗への備えとして完全ではない、という指摘です[3]。ALSOKの記事によれば、銀行の金庫では2つの錠の番号を2人が別々に管理します。こちらの目的は、1人による不正の防止です[18]
+- 物理学者ファインマンの回想『ご冗談でしょう、ファインマンさん』の章「Safecracker Meets Safecracker」には、ロスアラモスのモスラー社の書類棚の錠が、左・右・左と番号を合わせ、最後に右へ10まで回すと閂が引っ込む作りだったことと、工場出荷時の番号のまま使われている錠が少なくなかったことが出てきます[20]。初期パスワードを変えないのと同じで、番号を変えられる錠は、受け取ったら番号を変えるのが前提です
+- 日本製の自由変換ダイヤル錠は最後の番号がすべて8で、ALSOKの記事は「末広がりの八」にちなんだのだろうと推測しています[18]
+- 金庫と鍵の博物館にある英国チャブ社の金庫（昭和30年代に日本で使われたもの）は、ダイヤルの番号が1億通りで、鍵が壊されると、たこ糸が切れて分銅が落ち、閂が動かなくなる仕組みを持ちます[16]。このように攻撃を検知して閂を止める仕組みはリロッカーと呼ばれ、多くの金庫が備えています[1]
+
+### 参考文献
+
+1. Matt Blaze, "Safecracking for the computer scientist", University of Pennsylvania, draft, 2004（Revised 21 December 2004）— [mattblaze.org/papers/safelocks.pdf](https://www.mattblaze.org/papers/safelocks.pdf)
+2. US Patent 98,536, "Improvement in permutation-locks", 1870年1月4日（Silas N. Brooks, administrator of Linus Yale Jr., deceased）— [Google Patents](https://patents.google.com/patent/US98536A/en)
+3. US Patent 165,878, "Improvement in time-locks", 1875年7月20日（James Sargent）— [Google Patents](https://patents.google.com/patent/US165878A/en)
+4. US Patent 114,510, "Improvement in permutation-locks", 1871年5月9日（James T. Adams）、US Patent 153,744（同じ題名、1874年8月4日、Joseph Cassino）— [Google Patents（114,510）](https://patents.google.com/patent/US114510A/en)・[Google Patents（153,744）](https://patents.google.com/patent/US153744A/en)
+5. Sargent & Greenleaf, "About"（The Sargent and Greenleaf Timeline）— [sargentandgreenleaf.com/about/](https://sargentandgreenleaf.com/about/)
+6. Sargent & Greenleaf, "Model 6730, 6731, 6741 Group 2 Mechanical Safe Lock" — [sargentandgreenleaf.com/product/6700-series/](https://sargentandgreenleaf.com/product/6700-series/)
+7. Sargent & Greenleaf「Company History」「Mechanical Combination Locks」（旧サイト）— [Company History](https://ftp.sargentandgreenleaf.com/companyHistory.php)・[Mechanical Combination Locks](https://ftp.sargentandgreenleaf.com/MN-mechCombo.php)
+8. Yale, "History of Yale" — [yalehome.co.uk/history-of-yale/](https://yalehome.co.uk/history-of-yale/)
+9. ASME, "Linus Yale, Jr." — [asme.org](https://www.asme.org/topics-resources/content/linus-yale-jr)
+10. National Inventors Hall of Fame, "Linus Yale, Jr." — [invent.org](https://www.invent.org/inductees/linus-yale-jr)
+11. Anne Day, David Erroll, "The Glory of American Locks", Invention & Technology, Vol. 22, Issue 2, Fall 2006 — [inventionandtech.com](https://www.inventionandtech.com/content/glory-american-locks-0)
+12. Science Museum Group, "Brass puzzle combination lock, 1700-1800"（1968-704）— [collection.sciencemuseumgroup.org.uk](https://collection.sciencemuseumgroup.org.uk/objects/co50412/brass-puzzle-combination-lock-1700-1800)
+13. Master Lock, "About Us" — [masterlock.com/about-us](https://www.masterlock.com/about-us)
+14. BSI, "Secure storage units. Classification for high security locks according to their resistance to unauthorized opening"（EN 1300）— [knowledge.bsigroup.com](https://knowledge.bsigroup.com/products/secure-storage-units-classification-for-high-security-locks-according-to-their-resistance-to-unauthorized-opening)
+15. コクヨ「学籍簿用耐火金庫ダイヤルロックHS-SC355」取扱説明書— [kokuyo.com](https://www.kokuyo.com/sites/default/files/assets/pdf/support/manual-furniture/hs-sc355_dial.pdf)
+16. ALSOK「鍵ものがたり」vol.5「たこ糸と分銅のマジック」（チャブ社製金庫）— [alsok.co.jp](https://www.alsok.co.jp/person/recommend/always/key/key05.html)
+17. ALSOK「鍵ものがたり」vol.11「開けると音がする」（モスラー社の金庫）— [alsok.co.jp](https://www.alsok.co.jp/person/recommend/always/key/key11.html)
+18. ALSOK「鍵ものがたり」vol.12「好きな番号に変えられる」（自由変換ダイヤル錠）— [alsok.co.jp](https://www.alsok.co.jp/person/recommend/always/key/key12.html)
+19. 中央区「三井本館（みついほんかん）」— [city.chuo.lg.jp](https://www.city.chuo.lg.jp/a0052/bunkakankou/rekishi/kunibunkazai/021201.html)
+20. Richard P. Feynman, "Surely You're Joking, Mr. Feynman!", W. W. Norton, 1985, "Safecracker Meets Safecracker"（邦訳『ご冗談でしょう、ファインマンさん』）
+
+---
+
 ## 🎯 ユースケース
 
 - 授業・研修: 物理セキュリティや機械の仕組みの授業で、手順の回数が「ディスクを1枚ずつ拾う」ことから来ていると、模型の動きで示す
@@ -327,6 +418,7 @@ DialSafe Simulatorは、ダイヤル式金庫の正規の開け方と内部の�
 - 対象は右始動の4枚座の固定ダイヤル錠です。可変変換型・電子錠・左始動の型は扱いません
 - 破りの手法（ダイヤルの手応えから番号を探る方法など）は扱いません
 - 自動実演③は「左に回して止めた状態」から始めた例です。初期状態によっては、右3回でも開きます
+- 「世界のダイヤル錠」の節は、出典の記述をまとめたものです。機種ごとの仕様と手順は、各メーカーの資料と取扱説明書が正です
 
 ---
 
@@ -343,6 +435,7 @@ npm test
 - 振り返り（記録のまとめ方、区切りごとに動いたディスク、ずれたディスクを最後に動かした操作）、フェンスの爪が止まるディスク、問題番号（同じ番号なら同じ問題、問題番号1は固定）
 - index.htmlのCSP・ARIA・画像のalt・辞書との一致、日英の辞書、言語の選択、配色のコントラスト（文字4.5:1・図3:1以上、ライト・ダークとも）、行の長さ
 - READMEの表と数値（2,000通りの割合・目盛り数・左始動の番号）、ディレクトリー構造、画像（日英）も、実装と突き合わせて検証します
+- 「世界のダイヤル錠」の節は、日英で出典のURL・参考文献の番号・表の行がそろうこと、本文の出典番号がすべて参考文献にあることを確かめます
 
 ---
 
