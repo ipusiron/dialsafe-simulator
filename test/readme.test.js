@@ -163,13 +163,13 @@ for (const [lang, d] of Object.entries(DOCS)) {
   });
 }
 
-test('画像: 参照はすべて実在する。スクリーンショットは日本語版が assets/、英語版が assets/en/ の7枚。どこからも参照しない画像は置かない', () => {
+test('画像: 参照はすべて実在する。スクリーンショットは日本語版が assets/、英語版が assets/en/ の9枚。どこからも参照しない画像は置かない', () => {
   const refs = {};
   for (const [lang, d] of Object.entries(DOCS)) {
     refs[lang] = [...d.text.matchAll(/!\[[^\]]*\]\((assets\/[^)]+)\)/g)].map((m) => m[1]);
     for (const r of refs[lang]) assert.ok(fs.existsSync(path.join(ROOT, r)), r);
     const shots = refs[lang].filter((r) => /screenshot/.test(r));
-    assert.equal(shots.length, 7, lang);
+    assert.equal(shots.length, 9, lang);
     for (const r of shots) {
       assert.match(r, d.shots, r);
       assert.ok(fs.statSync(path.join(ROOT, r)).size <= 300 * 1024, r);

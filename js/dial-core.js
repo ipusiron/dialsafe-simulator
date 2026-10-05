@@ -154,6 +154,22 @@
     return createState(lock, reading, [0, 1, 2].map(() => Math.floor(rnd() * (lock.play + 1))));
   }
 
+  // ===== 練習の問題番号（同じ番号なら、同じ番号カードと同じ初期状態になる） =====
+  const PRACTICE_MAX_SEED = 999999;
+
+  // 問題番号から決まる乱数（番号をかき混ぜてから xorshift32）
+  function seededRandom(seed) {
+    const next = xorshift32((Math.imul(Number(seed) >>> 0, 2654435761) ^ 0x5bd1e995) >>> 0 || 1);
+    for (let i = 0; i < 4; i++) next();
+    return next;
+  }
+
+  function practiceFromSeed(seed) {
+    const rnd = seededRandom(seed);
+    const numbers = randomCombination(rnd);
+    return { numbers, state: randomState(makeLock(numbers), rnd) };
+  }
+
   // ===== 手順ガイド（取扱説明書の手順をなぞり、回数を数える。開くかどうかは模型のゲートの位置だけで決まる） =====
   // status: start（右から始める）・turning（回している）・ready（この番号で向きを変える／STEP4なら鍵を回す）・
   //         past（STEP1で4回目を過ぎた。もう一度右へ回して合わせる）・over（回し過ぎ）・restart（向きを変えた所が違う）・wrongStart（左から始めた）
@@ -221,6 +237,64 @@
     ];
   }
 
+  // ===== 操作の記録と振り返り =====
+  // 記録は { type: 'turn', dir, moves }（同じ向きに続けて回した目盛りを1つにまとめる）・{ type: 'key' }・{ type: 'close' } の並び
+  function appendMove(history, dir, count = 1) {
+    const last = history[history.length - 1];
+    if (last && last.type === 'turn' && last.dir === dir) return [...history.slice(0, -1), { ...last, moves: last.moves + count }];
+    return [...history, { type: 'turn', dir, moves: count }];
+  }
+
+  // 記録を、記録を始めたときの状態から模型で回し直す。回した区切りごとに、指標の数字（前→後）・各ディスクが動いた目盛り数・
+  // 区切りの終わりの手順ガイドを返す。鍵を回したときは、開いたか・ずれ・ずれたディスクを最後に動かした区切り（なければ null）を返す。
+  // guide は記録を始めたときの手順ガイド（自動実演のあとなど、途中から記録するとき）
+  function analyzeHistory(lock, start, history, guide = createGuide()) {
+    let s = start;
+    let g = guide;
+    const lastMoved = [null, null, null];
+    const items = history.map((h, index) => {
+      if (h.type === 'close') {
+        g = createGuide();
+        return { type: 'close' };
+      }
+      if (h.type === 'key') {
+        const off = offsets(lock, s);
+        const blame = off.map((o, k) => (Math.abs(o) <= lock.tolerance ? null : k < 3 ? lastMoved[k] : lastTurn(index)));
+        return { type: 'key', open: isOpen(lock, s), offsets: off, blame };
+      }
+      const before = s.a.slice();
+      const from = reading(s);
+      for (let i = 0; i < h.moves; i++) {
+        g = updateGuide(lock, g, reading(s), h.dir);
+        s = step(lock, s, h.dir);
+      }
+      const moved = s.a.map((a, k) => Math.abs(a - before[k]));
+      moved.forEach((m, k) => {
+        if (m) lastMoved[k] = index;
+      });
+      return { type: 'turn', dir: h.dir, moves: h.moves, from, to: reading(s), moved, step: g.step, status: g.status, arrivals: g.arrivals };
+    });
+    // ドライビングディスクは、最後に回した区切りで位置が決まる
+    function lastTurn(before) {
+      for (let i = before - 1; i >= 0; i--) if (history[i].type === 'turn') return i;
+      return null;
+    }
+    return { items, state: s, guide: g };
+  }
+
+  // ===== フェンスの真下の窓（鍵を回したときに、フェンスの爪が4枚のゲートを通れるか） =====
+  // 各ディスクのゲートが、フェンスから±half 目盛りの窓に入っていれば、その位置（ずれ）。窓の外なら null。並びは offsets と同じ
+  function fenceWindow(lock, s, half = 12) {
+    return offsets(lock, s).map((o) => ({ offset: Math.abs(o) <= half ? o : null, aligned: Math.abs(o) <= lock.tolerance }));
+  }
+
+  // フェンスの爪が上から順に（ドライビングディスク→第3→第2→第1）落ちるとき、最初に止まるディスク。すべて通れば null
+  function fenceStop(lock, s) {
+    const off = offsets(lock, s);
+    const k = [3, 2, 1, 0].find((i) => Math.abs(off[i]) > lock.tolerance);
+    return k === undefined ? null : k;
+  }
+
   // ===== 内部の表示（フェンスを中央に置いた横の帯の上の位置。−50〜49） =====
   // 各ディスクの前のツク（駆動側に押される）はゲートから PIN_FROM_GATE の所。
   // 駆動側の後ろのツクは、差 r＝0 のとき前のツクの PIN_WIDTH/2 先、r＝PLAY のとき反対側の PIN_WIDTH/2 先に来る位置に置く
@@ -260,6 +334,6 @@
     mod, signed, opposite, makeLock, createState, step, reading, slack, offsets, isOpen, dialTo, runPlan, correctPlan,
     pickupDistances, leftStartNumbers, createGuide, updateGuide, demoPlans, view, xorshift32,
     combinationGaps, gapLimits, isExact, isDialable, exactCount, PRACTICE_MARGIN, isPracticeCombination, randomCombination, randomState,
-    demoStart
+    demoStart, PRACTICE_MAX_SEED, seededRandom, practiceFromSeed, appendMove, analyzeHistory, fenceWindow, fenceStop
   };
 })();

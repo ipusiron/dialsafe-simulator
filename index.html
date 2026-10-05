@@ -162,10 +162,14 @@
         <div class="card guide-card">
           <h2 data-i18n="guide.title">手順ガイド</h2>
           <div class="practice">
+            <label for="practice-seed" class="field-label" data-i18n="practice.seed">問題番号</label>
+            <input type="number" id="practice-seed" class="seed-input" min="1" max="999999" step="1" inputmode="numeric">
+            <button type="button" id="practice-load" class="secondary" data-i18n="practice.load">この番号で練習</button>
             <button type="button" id="practice-new" class="secondary" data-i18n="practice.new">🎲 新しい番号で練習</button>
             <button type="button" id="practice-default" class="secondary" data-i18n="practice.default" disabled>既定の番号に戻す</button>
             <label class="check"><input type="checkbox" id="hide-inner"><span data-i18n="practice.hide">内部の動きを隠す</span></label>
           </div>
+          <p id="practice-alert" class="practice-alert" role="status" aria-live="polite" hidden></p>
           <h3 id="guide-card-title" data-i18n="guide.card">番号カード</h3>
           <ol id="guide-steps" class="guide-steps"></ol>
           <p id="guide-status" class="guide-status" role="status" aria-live="polite"></p>
@@ -179,6 +183,10 @@
             <button type="button" id="show-inner" class="secondary" data-i18n="practice.show">内部を見る</button>
           </div>
           <div id="inner-body">
+          <h3 data-i18n="lock.title">鍵を回したときの動き</h3>
+          <svg id="lockview" class="lockview" viewBox="-92 -38 164 72" aria-hidden="true" focusable="false"></svg>
+          <p id="lock-status" class="hint" data-i18n="lock.note">鍵を回すと、フェンスの爪が上から下りてきます。4枚のゲートがすべて爪の下にあれば、爪が落ちて閂を引き込めます。</p>
+          <h3 data-i18n="inner.strips">ディスクの1周（中央の線がフェンス）</h3>
           <ul class="legend">
             <li><span class="swatch swatch-gate" aria-hidden="true"></span><span data-i18n="inner.legend.gate">ゲート（切り欠き）</span></li>
             <li><span class="swatch swatch-front" aria-hidden="true"></span><span data-i18n="inner.legend.front">ツク（押される側）</span></li>
@@ -211,6 +219,16 @@
             <button type="button" id="demo-stop" class="secondary" data-i18n="demo.stop" disabled>止める</button>
           </div>
           <ul id="demo-log" class="demo-log" aria-live="polite"></ul>
+        </div>
+
+        <div class="card review-card" id="review-card">
+          <h2 data-i18n="review.title">振り返り</h2>
+          <p class="hint" data-i18n="review.lead">リセット（または練習・自動実演）のあとの操作を、模型で回し直して並べます。開かなかったときは、ずれたディスクを最後に動かした操作を示します。</p>
+          <div class="review-controls">
+            <button type="button" id="review-replay" class="secondary" data-i18n="review.replay">▶ 操作を再生</button>
+          </div>
+          <p id="review-empty" class="hint" data-i18n="review.empty">まだ操作がありません。</p>
+          <ol id="review-list" class="review-list"></ol>
         </div>
       </div>
     </section>

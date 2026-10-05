@@ -37,6 +37,8 @@ test('画面のスクリプトが使うキーは、すべて辞書にある（�
   for (const i of [1, 2, 3, 4]) assert.ok(MESSAGES.ja[`guide.step${i}`], i);
   for (const i of [1, 2, 3, 4, 5, 6]) for (const p of ['demo.head', 'demo.explain', 'demo.btn']) assert.ok(MESSAGES.ja[`${p}${i}`], `${p}${i}`);
   for (const i of [0, 1, 2, 3]) for (const p of ['wheel.name.', 'inner.wheel.']) assert.ok(MESSAGES.ja[`${p}${i}`], `${p}${i}`);
+  for (const st of ['ready', 'turning', 'past', 'over', 'restart', 'wrongStart', 'start']) assert.ok(MESSAGES.ja[`review.judge.${st}`], st);
+  for (const k of ['lock.fence', 'lock.bolt', 'lock.key']) assert.ok(MESSAGES.ja[k], k);
 });
 
 test('t は置き場所を値で埋め、未知のキーはキーのまま返す', () => {
