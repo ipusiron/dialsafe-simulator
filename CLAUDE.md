@@ -4,49 +4,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-DialSafe Simulator - An educational web-based visualization tool for understanding how 4-disk fixed-conversion dial locks work. This project visualizes the legitimate opening procedures and internal mechanics of safe combination locks commonly used in Japan.
+DialSafe Simulator - an educational web tool for the legitimate opening of a 4-disc fixed dial lock (common in Japanese home safes). The dial turns like a real one (the scale increases clockwise, so turning right lowers the number at the index). The wheel pack is a physical model of chained pin play, so the gates line up only as a result of dialing; nothing is snapped into place. Learn and Simulator tabs, step guide, inside view, five demonstrations, Japanese and English UI, light and dark themes. Part of the "100 Security Tools with Generative AI" project (Day050).
 
 ## Architecture
 
-Single-page application built with vanilla HTML/CSS/JavaScript for GitHub Pages deployment (no build process):
+All scripts are plain (non-module) scripts so that the page works from `file://`. Each script puts one object on `globalThis`.
 
-- **index.html**: Main structure with two tabs (LEARN, SIMULATOR)
-- **script.js**: Core logic (~1300 lines) containing dial mechanics, disk physics, i18n, and demo patterns
-- **style.css**: Styling with CSS Grid/Flexbox, dark/light themes via CSS custom properties
-- **assets/**: Educational diagrams and photos of actual dial locks
-
-### Key State Management (script.js)
-
-The `state` object manages all simulation state:
-- `value`: Current dial position (0-99)
-- `wheels[]`: Array of 4 disk objects with `gate`, `tsuku` (pin), and `position` properties
-- `combo`: Correct combination array (e.g., `[94, 30, 84, 13]`)
-- `stepIndex`: Current step in the 4-step unlock sequence
-- `dir`/`passes`: Direction and pass count for step validation
-
-### Disk Mechanics
-
-The driving disk connects directly to the dial. Other disks engage through pin (tsuku) collision detection in `driveDisks()`. Gates must align at position 50 for the fence to drop (checked in `checkFence()` with `FENCE_TOL` tolerance).
-
-### i18n System
-
-Translations stored in `I18N` object with `ja`/`en` keys. `applyI18n()` applies translations to elements with `data-i18n` attributes. Language persists via localStorage.
+- **index.html**: header (language and theme buttons), WAI-ARIA tabs (Learn, Simulator). Learn text carries `data-i18n` (bold as `<strong>`, line breaks as `<br>`; `learn.why.desc2` takes values from `data-i18n-vars`). Simulator: SVG dial (`#dial-face` rotated by `-p*3.6`), turn buttons, key and reset, step guide, inside view (`#wheels`), demonstrations. Meta CSP without `'unsafe-inline'`; no style attributes, inline scripts or handlers
+- **js/dial-core.js** (`DialCore`): pure logic, no DOM. Units are graduations (100 per revolution). State `{ p, a: [disc1, disc2, disc3] }` with unwrapped angles; `step(lock, s, 'R'|'L')` moves the spindle by −1/+1 and pushes each disc when the slack to its driver leaves `[0, play]` (`play = 100 − PIN_WIDTH`, PIN_WIDTH 4). `makeLock(numbers)` works back the gate angles from the combination (Disc 2 is offset by `2 × play` because it is set while pushed left). `offsets` / `isOpen` (all within TOLERANCE 1). `updateGuide` follows the manual's steps (statuses start, turning, ready, past, over, restart, wrongStart) but never decides opening. `demoPlans`, `view` (strip positions of gates and pins), `pickupDistances` (97, 193, 289), `leftStartNumbers`
+- **js/messages.js** (`DialMessages`): all strings in Japanese and English (same keys, placeholders and `**` pairs). `t(key, vars, lang)`
+- **js/i18n.js** (`DialI18n`): language from `?lang=` → saved (`dialsafe-simulator-lang`) → browser language; `applyStaticText` renders `**bold**` and `\n` as elements (no innerHTML)
+- **js/theme-init.js / theme.js** (`DialTheme`): theme applied before paint, follows the OS unless saved (`dialsafe-simulator-theme`)
+- **js/script.js**: UI only. Turning goes through `turn(dir, count)`, which updates the guide and the model one graduation at a time (drag, hold buttons and keys all use it). Keys only on the focused dial. Demonstrations animate the same `step` calls. Diagrams are SVG attributes only (no `.style`)
+- **css/style.css**: color tokens on `:root`; the OS dark block and `[data-theme="dark"]` must stay identical (tested)
 
 ## Development Commands
 
-```bash
-# Run local development server
-python -m http.server 8000
-# Then open http://localhost:8000
-
-# No build process - pure vanilla JS/HTML/CSS
-# Deploy by pushing to GitHub Pages branch
-```
+- `npm test` — node:test, no dependencies, Node 22+. Runs in GitHub Actions on push and pull requests
+- No build step. Open index.html directly or serve the folder
 
 ## Testing
 
-Manual browser testing. Key verification areas:
-- Dial rotation accuracy (0-99 wrapping)
-- Disk engagement via tsuku collision
-- Demo patterns (5 patterns showing success/failure cases)
-- Language/theme switching persistence
+- `test/model.test.js`: the model against a separately written reference (2,000 random starts, seed 20261005): correct steps, overshoot, too few, wrong numbers, left start; play stays in range; pick-up distances
+- `test/guide.test.js`, `test/demo.test.js`: step guide statuses and demonstration results
+- `test/html.test.js`, `test/messages.test.js`, `test/i18n.test.js`, `test/contrast.test.js`, `test/format.test.js`: CSP and markup, static text equals the dictionary, dictionaries, language choice, contrast (text 4.5:1, graphics 3:1), 44px buttons, line length and LF
+- `test/readme.test.js`: both READMEs (same headings), YAML structure, the model table and numbers recomputed from the core, directory tree, images (5 screenshots each, no unreferenced images)
+
+## Key Implementation Notes
+
+- Never use `innerHTML` or inline styles; draw with SVG attributes
+- Do not decide opening from the guide; only `isOpen` (gate offsets) decides
+- README numbers are recomputed by tests — update them from the core, not by hand. README states only what is true for the current version
+- Japanese strings do not put half-width spaces between Japanese and alphanumeric characters
