@@ -328,6 +328,13 @@ figcaption { margin-top: 8px; font-size: 14px; }
 }
 
 .result.ok { background: var(--ok-bg); border-color: var(--gate-ok); color: var(--ok-text); font-weight: 600; }
+.result.info { background: var(--accent-weak); border-color: var(--accent); color: var(--text); }
+
+.practice { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px; }
+.check { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: var(--accent); }
+.inner-hidden { padding: 12px; border: 1px dashed var(--border); border-radius: var(--radius-sm); }
+.inner-hidden p { margin-top: 0; }
 
 /* 手順ガイド */
 .guide-steps { list-style: none; padding: 0; margin: 0 0 10px; display: grid; gap: 6px; }

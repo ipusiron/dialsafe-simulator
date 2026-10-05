@@ -14,8 +14,24 @@
   const SPEEDS = { slow: { per: 1, delay: 30 }, normal: { per: 3, delay: 16 }, fast: { per: Infinity, delay: 0 } };
   const PAUSE = 600;
 
-  const lock = C.makeLock();
-  const app = { s: C.createState(lock), guide: C.createGuide(), open: false, result: null, demo: null, log: [], toastTimer: null };
+  // 練習モードでは番号を入れ替える（既定は 94-30-84-13）
+  let lock = C.makeLock();
+  // closed: 開けたあと「閉める」を押した状態（right＝閉めてから続けて右へ回した目盛り数）
+  const app = {
+    s: C.createState(lock), guide: C.createGuide(), open: false, result: null, demo: null, log: [], toastTimer: null,
+    practice: false, hidden: false, closed: null
+  };
+  // 番号を崩すのに必要な右回し（4回転）
+  const SCRAMBLE = 4 * C.N;
+
+  // 練習用の乱数（0以上1未満）
+  function rand() {
+    try {
+      return crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296;
+    } catch {
+      return Math.random();
+    }
+  }
 
   function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -95,7 +111,14 @@
       app.guide = C.updateGuide(lock, app.guide, C.reading(app.s), dir);
       app.s = C.step(lock, app.s, dir);
     }
-    app.result = null;
+    if (app.closed) {
+      // 閉めたあと、続けて右へ4回転以上回したら番号を崩したことにする（左へ回したら数え直す）
+      app.closed.right = dir === 'R' ? app.closed.right + count : 0;
+      if (app.closed.right >= SCRAMBLE) app.closed.scrambled = true;
+      app.result = { kind: app.closed.scrambled ? 'scrambled' : 'closed' };
+    } else {
+      app.result = null;
+    }
     render();
   }
 
@@ -112,18 +135,49 @@
     if (app.open) return;
     if (C.isOpen(lock, app.s)) {
       app.open = true;
-      app.result = { ok: true };
+      app.result = { kind: app.closed && !app.closed.scrambled ? 'unscrambled' : 'open' };
     } else {
-      app.result = { ok: false, offsets: C.offsets(lock, app.s) };
+      app.result = { kind: 'fail', offsets: C.offsets(lock, app.s) };
     }
+    app.closed = null;
     render();
   }
 
+  // 開けたあと扉を閉める。ダイヤルは動かさないので、ゲートは揃ったまま
+  function closeDoor() {
+    if (!app.open) return;
+    app.open = false;
+    app.closed = { right: 0, scrambled: false };
+    app.guide = C.createGuide();
+    app.result = { kind: 'closed' };
+    render();
+  }
+
+  // 初期状態に戻す。既定の番号では「左に回して止めた状態」、練習ではランダムな状態
   function resetModel() {
-    app.s = C.createState(lock);
+    app.s = app.practice ? C.randomState(lock, rand) : C.createState(lock);
     app.guide = C.createGuide();
     app.open = false;
     app.result = null;
+    app.closed = null;
+  }
+
+  function startPractice() {
+    stopDemo(true);
+    lock = C.makeLock(C.randomCombination(rand));
+    app.practice = true;
+    resetModel();
+    render();
+    toast(t('practice.started'));
+  }
+
+  function backToDefault() {
+    stopDemo(true);
+    lock = C.makeLock();
+    app.practice = false;
+    resetModel();
+    render();
+    toast(t('practice.back'));
   }
 
   // ===== 手順ガイド =====
@@ -155,6 +209,8 @@
 
   function renderGuide() {
     const g = app.guide;
+    $('guide-card-title').textContent = t(app.practice ? 'guide.cardPractice' : 'guide.card');
+    $('practice-default').disabled = !app.practice;
     const list = $('guide-steps');
     list.replaceChildren();
     const active = !['start', 'wrongStart', 'restart'].includes(g.status);
@@ -203,6 +259,9 @@
   }
 
   function renderWheels() {
+    $('inner-body').hidden = app.hidden;
+    $('inner-hidden').hidden = !app.hidden;
+    $('hide-inner').checked = app.hidden;
     const v = C.view(lock, app.s);
     for (const k of WHEEL_ORDER) {
       const n = wheelNodes[k];
@@ -245,9 +304,18 @@
     const box = $('result');
     const r = app.result;
     box.hidden = !r;
+    $('close-door').hidden = !app.open;
     if (!r) return;
-    box.textContent = r.ok ? t('sim.open') : t('sim.notOpen', { list: misalignedText(r.offsets) });
-    box.classList.toggle('ok', r.ok);
+    const text = {
+      open: () => t('sim.open'),
+      unscrambled: () => t('sim.openUnscrambled'),
+      closed: () => t('sim.closed'),
+      scrambled: () => t('sim.scrambled'),
+      fail: () => (app.hidden ? t('sim.notOpenHidden') : t('sim.notOpen', { list: misalignedText(r.offsets) }))
+    }[r.kind];
+    box.textContent = text();
+    box.classList.toggle('ok', r.kind === 'open' || r.kind === 'unscrambled');
+    box.classList.toggle('info', r.kind === 'closed' || r.kind === 'scrambled');
   }
 
   function render() {
@@ -259,6 +327,7 @@
 
   // ===== 自動実演（模型を1目盛りずつ回す） =====
   function demoHead(id) {
+    if (id === 6) return { key: 'demo.head6', vars: {}, cls: 'head' };
     if (id === 5) {
       const wrong = C.demoPlans(lock).find((d) => d.id === 5).plan[1][1];
       return { key: 'demo.head5', vars: { n: pad2(wrong), c: pad2(lock.numbers[1]) }, cls: 'head' };
@@ -281,13 +350,15 @@
   function setDemoRunning(id) {
     const running = id !== null;
     for (const b of document.querySelectorAll('.demo-btn')) b.classList.toggle('running', Number(b.dataset.demo) === id);
-    for (const id2 of ['turn-left', 'turn-right', 'turn-key']) $(id2).disabled = running;
+    for (const id2 of ['turn-left', 'turn-right', 'turn-key', 'close-door', 'practice-new']) $(id2).disabled = running;
+    $('practice-default').disabled = running || !app.practice;
     $('demo-stop').disabled = !running;
   }
 
   function runDemo(id) {
     stopDemo();
     resetModel();
+    app.s = C.demoStart(lock);
     const demo = C.demoPlans(lock).find((d) => d.id === id);
     const segs = C.runPlan(lock, app.s, demo.plan).segments;
     app.log = [demoHead(id)];
@@ -331,6 +402,7 @@
     const explain = { key: `demo.explain${d.id}`, cls: 'explain', vars: {} };
     if (d.id === 3) explain.vars = { need: C.pickupDistances(lock)[2], moves: d.segs[0].moves };
     if (d.id === 5) explain.vars = { d: Math.abs(offsets[1]) };
+    if (d.id === 6) explain.vars = { left: C.leftStartNumbers(lock).map(pad2).join('-') };
     app.log.push(explain);
     renderLog();
     app.demo = null;
@@ -457,6 +529,18 @@
     initHold($('turn-right'), 'R');
     initDrag();
     $('turn-key').addEventListener('click', turnKey);
+    $('close-door').addEventListener('click', closeDoor);
+    $('practice-new').addEventListener('click', startPractice);
+    $('practice-default').addEventListener('click', backToDefault);
+    $('hide-inner').addEventListener('change', () => {
+      app.hidden = $('hide-inner').checked;
+      render();
+    });
+    $('show-inner').addEventListener('click', () => {
+      app.hidden = false;
+      render();
+      $('hide-inner').focus();
+    });
     $('reset').addEventListener('click', () => {
       stopDemo(true);
       resetModel();
