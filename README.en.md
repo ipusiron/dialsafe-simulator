@@ -349,7 +349,8 @@ dialsafe-simulator/
 │   ├── load.js                        # Loads the plain scripts into the tests
 │   ├── messages.test.js               # Japanese and English dictionaries
 │   ├── model.test.js                  # Model (agreement with the reference, play, pick-up)
-│   └── readme.test.js                 # README tables, numbers, tree and images
+│   ├── readme.test.js                 # README tables, numbers, tree and images
+│   └── review.test.js                 # Review of your turns, the fence window, practice numbers
 ├── .gitignore                         # Files Git ignores
 ├── .nojekyll                          # Tells GitHub Pages not to use Jekyll
 ├── CLAUDE.md                          # Development guide (for Claude Code)

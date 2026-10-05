@@ -387,7 +387,8 @@ dialsafe-simulator/
 │   ├── load.js                        # 通常のスクリプトをテストに読み込む
 │   ├── messages.test.js               # 日英の辞書
 │   ├── model.test.js                  # 模型（参照実装との一致・遊び・拾い上げ）
-│   └── readme.test.js                 # READMEの表・数値・ツリー・画像
+│   ├── readme.test.js                 # READMEの表・数値・ツリー・画像
+│   └── review.test.js                 # 操作の振り返り・フェンスの窓・問題番号
 ├── .gitignore                         # Gitの管理から外すファイル
 ├── .nojekyll                          # GitHub PagesでJekyllを使わない指定
 ├── CLAUDE.md                          # 開発の手引き（Claude Code用）
