@@ -347,6 +347,7 @@ dialsafe-simulator/
 │   ├── theme-init.js                  # 描画の前にテーマを当てる
 │   └── theme.js                       # ライト・ダークの切り替え
 ├── test/                              # node:testのテスト
+│   ├── combination.test.js            # 番号の条件・練習用の番号と初期状態
 │   ├── contrast.test.js               # 配色のコントラスト・ボタンの高さ
 │   ├── demo.test.js                   # 自動実演の結果
 │   ├── format.test.js                 # 行の長さ・改行コード

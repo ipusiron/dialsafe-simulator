@@ -309,6 +309,7 @@ dialsafe-simulator/
 │   ├── theme-init.js                  # Applies the theme before drawing
 │   └── theme.js                       # Light and dark switching
 ├── test/                              # node:test tests
+│   ├── combination.test.js            # Combination conditions, practice numbers and start states
 │   ├── contrast.test.js               # Color contrast and button height
 │   ├── demo.test.js                   # Demonstration results
 │   ├── format.test.js                 # Line length and line endings
