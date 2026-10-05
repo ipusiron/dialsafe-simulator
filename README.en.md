@@ -15,7 +15,7 @@ DialSafe Simulator is a browser-based visualization tool for learning the legiti
 The tool has two tabs.
 
 1. Learn: explains the structure of the fixed dial lock, how it opens, how to operate it, and what the counts in the steps mean
-2. Simulator: open the lock with a dial that turns the same way as a real one, with a step guide, a view inside the lock and demonstrations
+2. Simulator: open the lock with a dial that turns the same way as a real one, with a step guide, a view inside the lock, demonstrations and a practice mode
 
 > This tool is for education (understanding legitimate operation) and does not cover attack or bypass techniques.
 
@@ -51,6 +51,14 @@ Try it directly in your browser.
 >
 >*"Why these counts?" on the Learn tab, showing from the model how many graduations it takes before each disc starts moving (97, 193, 289)*
 
+>![Practice mode](assets/en/screenshot6.png)
+>
+>*Practice mode. Opened a random combination card (12-88-28-68) from a random initial state with the steps alone, with the inside hidden*
+
+>![Demonstration 6](assets/en/screenshot7.png)
+>
+>*Demonstration 6 (starting to the left). The pushing side is reversed, so with the same numbers the gates are off by the pin thickness and the lock stays closed (dark)*
+
 ---
 
 ## 🔐 Target dial lock
@@ -76,6 +84,8 @@ The structure and procedure may differ by manufacturer and model. This tool is a
 - What a fixed dial lock is, its structure (main components), how it opens (Figures 1–3), and how to operate it (the four steps and how to count)
 - Right and left: right is clockwise. The scale increases clockwise, so turning right makes the number under the index smaller (with a photo of a real dial)
 - Why these counts: shows from the model how many graduations it takes before each disc starts moving, and how many discs each step moves
+- Why turn right 4 or more times when locking: explains that just closing the door leaves the gates lined up, so the key alone opens it
+- How many combinations: the 100⁴ = 100 million in name, and how many combinations line the gates up exactly with the legitimate steps (from the model)
 
 ### 🎛️ Simulator
 
@@ -84,11 +94,13 @@ The structure and procedure may differ by manufacturer and model. This tool is a
 - Step guide: shows where you are in the four steps of the combination card, how many times the number has come to the index, and warns about overshooting, reversing at the wrong place, or starting to the left
 - Turn the key: opens if the four gates are lined up with the fence. Otherwise it lists the discs that are off and by how many graduations
 - Inside the lock: draws the gate and two kinds of pins (pushed and pushing) of each disc on horizontal strips, and colors the discs whose pins are touching and the gates that are lined up
+- Close: closes the door after opening. Turning the dial right 4 or more times reports that the numbers are scrambled, and turning the key without scrambling shows that the lock opens anyway
+- Practice mode: practice with a random combination card and a random initial state. The inside can be hidden (while hidden, the reason a lock does not open is not shown either)
 
 ### 🎬 Demonstrations
 
-- Five demonstrations that turn the model one graduation at a time from the initial state (stopped after turning left)
-- ① correct, ② right 5 times (extra), ③ right 3 times (too few), ④ left twice at the end (overshoot), ⑤ wrong number in STEP2
+- Six demonstrations that turn the model one graduation at a time from the state stopped after turning left (in practice mode, with the practice numbers)
+- ① correct, ② right 5 times (extra), ③ right 3 times (too few), ④ left twice at the end (overshoot), ⑤ wrong number in STEP2, ⑥ starting to the left (same numbers)
 - The log shows how many graduations each step turned, the result of turning the key, and why the lock did not open. You can choose the speed (slow, normal, fast) and stop a demonstration
 
 ### 🌐 Interface
@@ -108,6 +120,8 @@ The structure and procedure may differ by manufacturer and model. This tool is a
 4. Press "Turn the key". If the four gates are lined up, the lock opens. If not, the discs that are off are listed, so reset and try again
 5. In "Inside the lock", watch the moment a pin meets another and the discs start turning together
 6. In the demonstrations, see why the lock does not open when the counts change or a number is wrong
+7. After opening, press "Close" and turn the key right away to see that it opens, then turn right 4 or more times to scramble the numbers and see that it no longer opens
+8. With "Practice with new numbers", open a random combination card with the steps alone. With "Hide the inside of the lock", you cannot see inside, just like a real safe
 
 ---
 
@@ -218,6 +232,16 @@ The table shows how often turning the key opened the lock for each way of dialin
 - The step guide only follows the manual and counts; it plays no part in deciding whether the lock opens
 - The tests (`test/model.test.js`, `test/readme.test.js`) recompute the values in the table
 
+### Conditions for a combination that opens
+
+The graduations from one number to the next, counted in the turning direction (a full revolution of 100 for the same number), have upper limits: 88 in STEP2 (3×96−200), 92 in STEP3 (2×96−100) and 96 in STEP4. Beyond them, a disc you have already set gets picked up.
+
+- 100×88×92×96 = 77,721,600 combinations line the gates up exactly, about 78% of the 100 million in name
+- Numbers just one graduation over a limit (89, 93, 97) still open, because the drag stays within the ±1 tolerance
+- Practice mode picks combinations with at least 3 graduations of margin below each limit, because numbers right at a limit pick up an already set disc with the slightest difference in turning
+- The default combination 94-30-84-13 has 36, 46 and 29 graduations
+- The tests (`test/combination.test.js`) confirm that the conditions match the results of turning the model for 1,900 combinations
+
 ---
 
 ## 🎯 Use cases
@@ -229,6 +253,7 @@ The table shows how often turning the key opened the lock for each way of dialin
 - Puzzle and escape game design: explain dial lock gimmicks and check numbers and turning directions
 - Exhibitions: supplement real locks in museums or corporate displays by showing what moves inside
 - Fiction and scripts: check the steps and movements of a scene where a character opens a safe with the correct combination
+- Practice: in practice mode, learn to read a combination card and follow the steps without seeing inside
 - Learning programming and mechanical design: read a model of chained play (backlash), checks with a fixed seed, and an SVG interface in a small codebase
 
 This tool is for learning legitimate operation and is not intended for opening other people's safes. Please do not misuse it.
@@ -249,7 +274,7 @@ This tool is for learning legitimate operation and is not intended for opening o
 ## ⚠️ Notes and limitations
 
 - This is a simplified model for education. The pin thickness (4 graduations) and tolerance (±1 graduation) are this tool's values; real dimensions, tolerances and combination restrictions differ by manufacturer and model. Friction and spring forces are not modeled
-- The combination 94-30-84-13 is a fictional number for this tool
+- The combination 94-30-84-13 and the practice combinations are fictional numbers for this tool
 - The target is the 4-disc fixed dial lock that starts to the right. Variable conversion types, electronic locks and types that start to the left are not covered
 - Techniques for defeating locks (such as finding numbers from the feel of the dial) are not covered
 - Demonstration 3 starts from the state stopped after turning left. Depending on the initial state, right 3 times can also open the lock
@@ -264,7 +289,8 @@ npm test
 
 - Runs on the standard Node.js 22+ test runner (`node:test`) with no dependencies. GitHub Actions runs it on every push and pull request
 - Model: with the same 2,000 initial states as a separately written reference implementation, the results of the correct steps, overshooting, too few turns, wrong numbers and starting left match; the play always stays within 0–96; and the discs start moving after 97, 193 and 289 graduations
-- The step guide (counting, overshooting, reversing at the wrong place, starting to the left), and the results of the five demonstrations and which disc ends up off
+- The step guide (counting, overshooting, reversing at the wrong place, starting to the left), and the results of the six demonstrations and which disc ends up off
+- The combination conditions against the model, and the practice combinations and initial states (with practice numbers too, demonstrations ① and ② open and ③–⑥ do not)
 - index.html CSP, ARIA, image alt text and agreement with the dictionary, the Japanese and English dictionaries, language selection, color contrast (text 4.5:1 and graphics 3:1 or more, in light and dark), and line length
 - The tables and numbers in both READMEs (the 2,000-state rates, graduation counts, numbers for starting left), the directory tree and the images are also checked against the implementation
 
@@ -283,7 +309,9 @@ dialsafe-simulator/
 │   │   ├── screenshot2.png            # A pin meets and picks up Disc 3
 │   │   ├── screenshot3.png            # Overshoot warning
 │   │   ├── screenshot4.png            # Demonstration 3
-│   │   └── screenshot5.png            # Why these counts
+│   │   ├── screenshot5.png            # Why these counts
+│   │   ├── screenshot6.png            # Practice mode
+│   │   └── screenshot7.png            # Demonstration 6
 │   ├── AntiFire_DialLock_Component.png # Cross-section (names of the parts)
 │   ├── DialLock.jpg                   # A fixed dial lock
 │   ├── DialLock1.jpg                  # The four discs seen from the side
@@ -298,11 +326,13 @@ dialsafe-simulator/
 │   ├── screenshot2.png                # Screenshot for the Japanese README (picking up Disc 3)
 │   ├── screenshot3.png                # Screenshot for the Japanese README (overshoot)
 │   ├── screenshot4.png                # Screenshot for the Japanese README (demonstration 3)
-│   └── screenshot5.png                # Screenshot for the Japanese README (why these counts)
+│   ├── screenshot5.png                # Screenshot for the Japanese README (why these counts)
+│   ├── screenshot6.png                # Screenshot for the Japanese README (practice mode)
+│   └── screenshot7.png                # Screenshot for the Japanese README (demonstration 6)
 ├── css/                               # Styles
 │   └── style.css                      # Page styles (light and dark colors)
 ├── js/                                # Page scripts (plain scripts that work from file://)
-│   ├── dial-core.js                   # Core (pin-play model, step guide, demonstrations, view)
+│   ├── dial-core.js                   # Core (pin-play model, step guide, combination conditions, demonstrations, view)
 │   ├── i18n.js                        # Language selection and static text
 │   ├── messages.js                    # Japanese and English text
 │   ├── script.js                      # Page logic
