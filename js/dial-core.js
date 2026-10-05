@@ -117,14 +117,15 @@
   // status: start（右から始める）・turning（回している）・ready（この番号で向きを変える／STEP4なら鍵を回す）・
   //         past（STEP1で4回目を過ぎた。もう一度右へ回して合わせる）・over（回し過ぎ）・restart（向きを変えた所が違う）・wrongStart（左から始めた）
   function createGuide() {
-    return { step: 0, arrivals: 0, status: 'start', done: [], last: null };
+    return { step: 0, arrivals: 0, status: 'start', done: [], last: null, at: null };
   }
 
   // from の数字から dir に1目盛り回したときに、ガイドを進める
   function updateGuide(lock, g, fromReading, dir) {
     const to = mod(fromReading + (dir === 'L' ? 1 : -1));
-    const restartWith = (status, last) => {
-      const fresh = { step: 0, arrivals: 0, status, done: [], last };
+    // やり直し。at は誤りが起きたステップ（向きを変える所の誤りの知らせに使う）
+    const restartWith = (status, last, at = g.step) => {
+      const fresh = { step: 0, arrivals: 0, status, done: [], last, at };
       return dir === 'R' ? count({ ...fresh, status: 'turning' }) : fresh;
     };
     // 現在のステップの向きに1目盛り進めたとき
@@ -140,7 +141,7 @@
       } else if (arrivals === need.arrivals) {
         status = 'ready';
       }
-      return { ...cur, arrivals, status };
+      return { ...cur, arrivals, status, last: status === 'over' ? 'over' : cur.last };
     }
 
     if (g.status === 'over' || g.status === 'restart' || g.status === 'wrongStart') {

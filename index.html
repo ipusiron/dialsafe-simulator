@@ -1,78 +1,61 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self';" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="DialSafe Simulator - 4枚座の固定ダイヤル錠の正規の開け方と内部の動きを可視化する教育ツール">
+  <meta name="author" content="ipusiron">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <script src="js/theme-init.js"></script>
   <title>DialSafe Simulator - 金庫ダイヤルシミュレーター</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header">
-    <div class="topbar">
-      <div class="brand">
-        <h1 data-i18n="app.title">DialSafe Simulator</h1>
-        <p class="subtitle" data-i18n="app.subtitle">
-          金庫ダイヤルシミュレーター（4枚座の固定ダイヤル錠・正規解錠を可視化）
-        </p>
+    <div class="header-row">
+      <h1>DialSafe Simulator</h1>
+      <div class="header-actions">
+        <button type="button" id="btn-lang" class="icon-btn" data-i18n="ui.langButton" data-i18n-attr="aria-label:ui.langLabel;title:ui.langLabel"
+          aria-label="Switch to English" title="Switch to English">English</button>
+        <button type="button" id="btn-theme" class="icon-btn" aria-label="ダークモードに切り替える" title="ダークモードに切り替える">🌙</button>
       </div>
     </div>
+    <p data-i18n="ui.subtitle">金庫ダイヤルシミュレーター（4枚座の固定ダイヤル錠・正規の開け方を可視化）</p>
   </header>
 
-  <main class="container">
-    <div class="nav-wrapper">
-      <nav class="tabs">
-        <button class="tab-button active" data-tab="learn" data-i18n="tab.learn">学習</button>
-        <button class="tab-button" data-tab="sim" data-i18n="tab.sim">シミュレーター</button>
-      </nav>
-      <div class="controls-switch">
-        <button id="lang-toggle" class="lang-toggle-btn">
-          <span id="lang-toggle-text">🇺🇸 English</span>
-        </button>
-        <button id="theme-toggle" class="theme-toggle-btn">
-          <span id="theme-toggle-icon">🌙</span>
-        </button>
-      </div>
-    </div>
+  <nav class="tabs" role="tablist" data-i18n-attr="aria-label:ui.tabsLabel" aria-label="表示の切り替え">
+    <button type="button" class="tab-button active" role="tab" id="tab-learn" data-tab="learn" aria-controls="learn" aria-selected="true"
+      data-i18n="tab.learn">学習</button>
+    <button type="button" class="tab-button" role="tab" id="tab-sim" data-tab="sim" aria-controls="sim" aria-selected="false" tabindex="-1"
+      data-i18n="tab.sim">シミュレーター</button>
+  </nav>
 
-    <!-- LEARN -->
-    <section id="learn" class="tab-content active">
-      <!-- 固定ダイヤル錠とは -->
+  <main>
+    <!--学習-->
+    <section id="learn" class="tab-content active" role="tabpanel" aria-labelledby="tab-learn">
       <div class="card">
         <h2 data-i18n="learn.whatIs.title">固定ダイヤル錠とは</h2>
-        <div class="what-is-grid">
-          <div class="what-is-text">
-            <p data-i18n="learn.whatIs.desc1">
-              固定ダイヤル錠（固定変換ダイヤル錠）は、日本の家庭用耐火金庫で広く使用される機械式の錠前です。
-              0〜99の目盛りが刻まれたダイヤルを、決められた番号と手順で回転させることで開錠します。
-            </p>
-            <p data-i18n="learn.whatIs.desc2">
-              電子錠と異なり電源不要で、適切にメンテナンスすれば数十年以上使用可能です。
-              番号の組み合わせは工場出荷時に設定され、通常は変更できません（固定式）。
-              4枚座の場合、理論上の組み合わせは100万通り（100⁴）となります。
-            </p>
-            <p data-i18n="learn.whatIs.desc3">
-              正しい操作手順（右回転→左回転の交互）と、各番号での正確な通過回数が
-              両方揃って初めて開錠する仕組みです。
-            </p>
-            <p data-i18n="learn.whatIs.desc4">
-              固定ダイヤル錠はダイヤル錠の中でもっともシンプルな構造を持ち、それほど高い安全性は持ちません。
-            </p>
+        <div class="two-col">
+          <div>
+            <p data-i18n="learn.whatIs.desc1">固定ダイヤル錠（固定変換ダイヤル錠）は、日本の家庭用耐火金庫で広く使用される機械式の錠前です。0〜99の目盛りが刻まれたダイヤルを、決められた番号と手順で回転させることで開錠します。</p>
+            <p data-i18n="learn.whatIs.desc2">電子錠と異なり電源不要で、適切にメンテナンスすれば数十年以上使用可能です。番号の組み合わせは工場出荷時に設定され、通常は変更できません（固定式）。4枚座の場合、理論上の組み合わせは100⁴＝1億通りとなります。</p>
+            <p data-i18n="learn.whatIs.desc3">正しい操作手順（右回転→左回転の交互）と、各番号での正確な通過回数が両方揃って初めて開錠する仕組みです。</p>
+            <p data-i18n="learn.whatIs.desc4">固定ダイヤル錠はダイヤル錠の中でもっともシンプルな構造を持ち、それほど高い安全性は持ちません。</p>
           </div>
-          <div class="what-is-image">
-            <img src="assets/DialLock.jpg" alt="固定ダイヤル錠の外観" class="what-is-img">
-          </div>
+          <img src="assets/DialLock.jpg" alt="固定ダイヤル錠の外観" class="photo" data-i18n-attr="alt:learn.whatIs.alt">
         </div>
       </div>
-      
-      <!-- 構造解説 -->
+
       <div class="card">
         <h2 data-i18n="learn.structure.title">固定ダイヤル錠の構造</h2>
-        <div class="structure-grid">
-          <div class="structure-images">
-            <img src="assets/AntiFire_DialLock_Component.png" alt="耐火金庫の固定ダイヤル錠の各要素名称" class="structure-img">
-          </div>
-          <div class="structure-text">
+        <div class="two-col">
+          <img src="assets/AntiFire_DialLock_Component.png" alt="耐火金庫の固定ダイヤル錠の各要素名称" class="figure"
+            data-i18n-attr="alt:learn.structure.alt">
+          <div>
             <h3 data-i18n="learn.structure.components">主要部品</h3>
             <ul>
               <li data-i18n="learn.components.dial"><strong>目盛盤（つまみ）</strong>：0-99の目盛りが印字された操作部、直径が大きいほど高級</li>
@@ -85,184 +68,138 @@
             </ul>
           </div>
         </div>
-        <p data-i18n="learn.structure.mechanism">
-          芯棒を介して<strong>ドライビングディスクのみ</strong>が目盛盤と直結し、最初にドライブされます。
-          他ディスクは<strong>テンションスプリング</strong>で密着し、各ディスクの<strong>ツク（突起）</strong>同士が当たりながら順次回転を伝達。
-          バネが弱くなるとツクが空回りして故障の原因となります。
-          4つの<strong>ゲート（切り欠き）</strong>が一直線に揃うと閂を引き込んで開錠します。
-        </p>
-        <div class="structure-image-bottom">
-          <img src="assets/dial_lock.png" alt="固定ダイヤル錠と鍵の錠前の連動" class="structure-img-bottom">
-        </div>
+        <p data-i18n="learn.structure.mechanism">芯棒を介して<strong>ドライビングディスクのみ</strong>が目盛盤と直結し、最初にドライブされます。
+          他ディスクは<strong>テンションスプリング</strong>で密着し、各ディスクの<strong>ツク（突起）</strong>同士が当たりながら順次回転を伝達。バネが弱くなるとツクが空回りして故障の原因となります。4つの<strong>ゲート（切り欠き）</strong>が一直線に揃うと閂を引き込んで開錠します。</p>
+        <img src="assets/dial_lock.png" alt="固定ダイヤル錠と鍵の錠前の連動" class="figure figure-wide" data-i18n-attr="alt:learn.structure.altBottom">
       </div>
 
-      <!-- 開錠メカニズム -->
       <div class="card">
         <h2 data-i18n="learn.mechanism.title">開錠メカニズム</h2>
-        <div class="mechanism-grid">
-          <div class="mechanism-text">
-            <p data-i18n="learn.mechanism.desc1">
-              固定ダイヤル錠が開錠する理由は、<strong>4つのゲート（切り欠き）が一直線に揃う</strong>ことで
-              <strong>フェンス</strong>という部品が落ち、<strong>閂（かんぬき）</strong>を引き込めるようになるからです。
-            </p>
-            <div class="mechanism-states">
-              <div class="mechanism-state">
-                <img src="assets/DialLock_Lock1.png" alt="図1：施錠状態" class="mechanism-img">
-                <p data-i18n="learn.mechanism.fig1"><strong>図1：施錠状態</strong><br>
-                ゲートが揃っていないため、フェンスが上がったまま。閂が出て扉は開かない。</p>
-              </div>
-              <div class="mechanism-state">
-                <img src="assets/DialLock_Lock2.png" alt="図2：一部解錠" class="mechanism-img">
-                <p data-i18n="learn.mechanism.fig2"><strong>図2：一部のゲートが揃った状態</strong><br>
-                一部のゲートは合っているが、全てが揃っていないためフェンスは落ちない。</p>
-              </div>
-              <div class="mechanism-state">
-                <img src="assets/DialLock_Lock3.png" alt="図3：完全解錠" class="mechanism-img">
-                <p data-i18n="learn.mechanism.fig3"><strong>図3：完全解錠状態</strong><br>
-                4つ全てのゲートが一直線に揃い、フェンスが落ちて閂を引き込める。</p>
-              </div>
-            </div>
-          </div>
+        <p data-i18n="learn.mechanism.desc1">固定ダイヤル錠が開錠する理由は、<strong>4つのゲート（切り欠き）が一直線に揃う</strong>ことで<strong>フェンス</strong>という部品が落ち、<strong>閂（かんぬき）</strong>を引き込めるようになるからです。</p>
+        <div class="figures">
+          <figure>
+            <img src="assets/DialLock_Lock1.png" alt="図1：施錠状態" class="figure" data-i18n-attr="alt:learn.mechanism.alt1">
+            <figcaption data-i18n="learn.mechanism.fig1"><strong>図1：施錠状態</strong><br>ゲートが揃っていないため、フェンスが上がったまま。閂が出て扉は開かない。</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/DialLock_Lock2.png" alt="図2：一部のゲートが揃った状態" class="figure" data-i18n-attr="alt:learn.mechanism.alt2">
+            <figcaption data-i18n="learn.mechanism.fig2"><strong>図2：一部のゲートが揃った状態</strong><br>一部のゲートは合っているが、すべてが揃っていないためフェンスは落ちない。</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/DialLock_Lock3.png" alt="図3：完全解錠状態" class="figure" data-i18n-attr="alt:learn.mechanism.alt3">
+            <figcaption data-i18n="learn.mechanism.fig3"><strong>図3：完全解錠状態</strong><br>4つすべてのゲートが一直線に揃い、フェンスが落ちて閂を引き込める。</figcaption>
+          </figure>
         </div>
-        <p class="note" data-i18n="learn.mechanism.note">
-          💡 重要：<strong>正確な手順</strong>で操作することで、4つのディスクのゲートを順次正しい位置に配置し、
-          最終的に一直線に揃えることができます。これが「正規の開錠」の原理です。
-        </p>
+        <p class="note" data-i18n="learn.mechanism.note">💡 重要：<strong>正確な手順</strong>で操作することで、4つのディスクのゲートを順次正しい位置に配置し、最終的に一直線に揃えることができます。これが「正規の開錠」の原理です。</p>
       </div>
 
-      <!-- 操作法 -->
       <div class="card">
         <h2 data-i18n="learn.operation.title">操作法</h2>
-        <p data-i18n="learn.desc">
-          固定ダイヤル錠（4枚座）は、<strong>第1〜第3ディスク＋ドライビングディスク</strong>の
-          4つのゲートを一直線に揃えると<strong>フェンス</strong>が落ち、閂を引き込めます。
-        </p>
-        <ol id="learn-steps">
+        <p data-i18n="learn.desc">固定ダイヤル錠（4枚座）は、<strong>第1〜第3ディスク＋ドライビングディスク</strong>の4つのゲートを一直線に揃えると<strong>フェンス</strong>が落ち、閂を引き込めます。</p>
+        <ol class="steps">
           <li data-i18n="learn.step1">① 右（R）に<strong>4回以上</strong>まわして、<strong>1番目</strong>の数値で停止</li>
           <li data-i18n="learn.step2">② 左（L）に<strong>3回</strong>まわして、<strong>2番目</strong>の数値で停止</li>
           <li data-i18n="learn.step3">③ 右（R）に<strong>2回</strong>まわして、<strong>3番目</strong>の数値で停止</li>
           <li data-i18n="learn.step4">④ 左（L）に<strong>1回</strong>まわして、<strong>4番目</strong>の数値で停止</li>
         </ol>
-        <p class="note" data-i18n="learn.note">
-          ⚠️ 重要：「○回まわす」は<strong>その番号が指標を○回通過する</strong>という意味です。<strong>「0」を○回通過させるのではありません！</strong><br>例：「右に4回まわして10で停止」= 10が指標を4回通過してから停止（3回通り過ぎて、4回目はピッタリ止める）。回し過ぎたらやり直し。
-        </p>
-        
-        <div class="demo-patterns">
-          <h3 data-i18n="learn.demo.title">自動実演パターン</h3>
-          <div class="demo-combo-display">
-            <span data-i18n="learn.demo.combo">実演用正解番号:</span>
-            <span id="demo-combination" class="demo-combo-text">10 - 40 - 70 - 20</span>
+        <p class="note" data-i18n="learn.note">⚠️ 重要：「○回まわす」は<strong>その番号が指標を○回通過する</strong>という意味です。<strong>「0」を○回通過させるのではありません！</strong><br>例：「右に4回まわして10で停止」= 10が指標を4回通過してから停止（3回通り過ぎて、4回目はピッタリ止める）。回し過ぎたらやり直し。</p>
+        <div class="two-col">
+          <div>
+            <p data-i18n="learn.direction">右は<strong>時計回り</strong>、左は反時計回りです。ダイヤルの目盛りは時計回りに増えるので、<strong>右に回すと指標の下の数字は小さくなり</strong>、左に回すと大きくなります。</p>
+            <p data-i18n="learn.key">4つの番号を合わせたら、最後に鍵を挿して右（時計回り）に回し、扉を開けます。</p>
           </div>
+          <img src="assets/DialLock5.jpg" alt="固定ダイヤル錠のダイヤル目盛り（0の右隣が10）" class="photo" data-i18n-attr="alt:learn.operation.alt">
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 data-i18n="learn.why.title">なぜこの回数なのか</h2>
+        <p data-i18n="learn.why.desc1">ドライビングディスクのツクは、反対向きに回し始めてから<strong>ほぼ1回転</strong>して、ようやく第3ディスクのツクに反対側から当たります。第3ディスクが第2ディスクを、第2ディスクが第1ディスクを拾うときも同じです。</p>
+        <p data-i18n="learn.why.desc2" data-i18n-vars="pin:4;d3:97;d2:193;d1:289">本ツールの模型（ツクの厚み4目盛り）では、左に回して止めた状態から右へ回すと、第3・第2・第1ディスクは<strong>97・193・289目盛り</strong>で動き出します。</p>
+        <p data-i18n="learn.why.desc3">右4回目で止めれば、どの状態から始めても3枚とも拾い切れます。続く左3回目では第2ディスクまで、右2回目では第3ディスクまでを動かし、先に合わせたディスクには触れません。最後の左1回目はドライビングディスクだけを動かします。回し過ぎると、合わせたディスクを拾って動かしてしまうので、最初からやり直しです。</p>
+        <button type="button" id="go-demo" class="secondary" data-i18n="learn.why.demo">自動実演で動きを見る</button>
+      </div>
+    </section>
+
+    <!--シミュレーター-->
+    <section id="sim" class="tab-content" role="tabpanel" aria-labelledby="tab-sim" hidden>
+      <div class="sim-grid">
+        <div class="card dial-card">
+          <h2 data-i18n="sim.dialTitle">ダイヤル</h2>
+          <svg id="dial" class="dial" viewBox="-110 -120 220 230" tabindex="0" role="group" aria-roledescription="ダイヤル"
+            data-i18n-attr="aria-label:sim.dialLabel;aria-roledescription:sim.dialRole"
+            aria-label="ダイヤル。→キーで右（時計回り）、←キーで左（反時計回り）に1目盛り。Shiftを押しながらで10目盛り">
+            <g id="dial-face"></g>
+            <polygon class="dial-index" points="-7,-119 7,-119 0,-105"></polygon>
+          </svg>
+          <p class="reading"><span data-i18n="sim.reading">指標の数字</span><output id="reading" for="dial">00</output></p>
+          <div class="turn-buttons">
+            <button type="button" id="turn-left" class="turn-btn" data-i18n="btn.left">↺ 左へ（反時計回り）</button>
+            <button type="button" id="turn-right" class="turn-btn" data-i18n="btn.right">右へ（時計回り）↻</button>
+          </div>
+          <p class="hint" data-i18n="sim.hint">ダイヤルをドラッグするか、ボタンを押し続けて回します。ダイヤルを選んでから←→キーでも回せます（Shiftで10目盛り）。右に回すと数字は小さくなります。</p>
+          <div class="key-row">
+            <button type="button" id="turn-key" class="primary" data-i18n="btn.key">🔑 鍵を回す</button>
+            <button type="button" id="reset" class="secondary" data-i18n="btn.reset">リセット</button>
+          </div>
+          <p id="result" class="result" role="status" aria-live="polite" hidden></p>
+        </div>
+
+        <div class="card guide-card">
+          <h2 data-i18n="guide.title">手順ガイド</h2>
+          <h3 data-i18n="guide.card">番号カード</h3>
+          <ol id="guide-steps" class="guide-steps"></ol>
+          <p id="guide-status" class="guide-status" role="status" aria-live="polite"></p>
+          <p class="hint" data-i18n="guide.note">ガイドは取扱説明書の手順をなぞって回数を数えます。開くかどうかは、ガイドではなくゲートの位置で決まります。</p>
+        </div>
+
+        <div class="card inner-card">
+          <h2 data-i18n="inner.title">内部の動き</h2>
+          <ul class="legend">
+            <li><span class="swatch swatch-gate" aria-hidden="true"></span><span data-i18n="inner.legend.gate">ゲート（切り欠き）</span></li>
+            <li><span class="swatch swatch-front" aria-hidden="true"></span><span data-i18n="inner.legend.front">ツク（押される側）</span></li>
+            <li><span class="swatch swatch-back" aria-hidden="true"></span><span data-i18n="inner.legend.back">ツク（押す側）</span></li>
+          </ul>
+          <div id="wheels" class="wheels"></div>
+          <p id="fence-status" class="fence-status"></p>
+          <p class="hint" data-i18n="inner.note">中央の線がフェンスの位置です。各ディスクの橙色のゲートが線の上に揃うと、フェンスが落ちます。上下に並ぶツクが触れると、上のディスクが下のディスクを押して一緒に回します。</p>
+        </div>
+
+        <div class="card demo-card" id="demo-card">
+          <h2 data-i18n="demo.title">自動実演</h2>
+          <p class="hint" data-i18n="demo.lead">初期状態（左に回して止めた状態）から、模型を実際に1目盛りずつ回します。</p>
           <div class="demo-buttons">
-            <button id="demo-pattern1" class="demo-btn" data-i18n="learn.demo.pattern1">① 正確な操作（R4回）</button>
-            <button id="demo-pattern2" class="demo-btn" data-i18n="learn.demo.pattern2">② 多めに回転（R5回）</button>
-            <button id="demo-pattern3" class="demo-btn" data-i18n="learn.demo.pattern3">③ 不足（R3回のみ）</button>
-            <button id="demo-pattern4" class="demo-btn" data-i18n="learn.demo.pattern4">④ 最終ステップ誤操作</button>
-            <button id="demo-pattern5" class="demo-btn" data-i18n="learn.demo.pattern5">⑤ 中間ステップで間違った数値</button>
+            <button type="button" class="demo-btn" data-demo="1" data-i18n="demo.btn1">① 正確な操作</button>
+            <button type="button" class="demo-btn" data-demo="2" data-i18n="demo.btn2">② 右に5回（多め）</button>
+            <button type="button" class="demo-btn" data-demo="3" data-i18n="demo.btn3">③ 右に3回（不足）</button>
+            <button type="button" class="demo-btn" data-demo="4" data-i18n="demo.btn4">④ 最後に左へ2回（回し過ぎ）</button>
+            <button type="button" class="demo-btn" data-demo="5" data-i18n="demo.btn5">⑤ STEP2で番号違い</button>
           </div>
-        </div>
-        
-        <div class="learn-controls">
-          <button id="learn-reset" class="secondary" data-i18n="btn.reset">リセット</button>
-        </div>
-        <div id="learn-log" class="log" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <!-- SIMULATOR -->
-    <section id="sim" class="tab-content">
-      <div class="grid">
-        <div class="card">
-          <h2 data-i18n="sim.dialTitle">ダイヤル操作</h2>
-          <div class="dial-wrap">
-            <div class="dial-indicator">▼</div>
-            <div id="dial" class="dial" aria-label="dial" role="slider" aria-valuemin="0" aria-valuemax="99" aria-valuenow="0" tabindex="0">
-              <div class="dial-face">
-                <div class="dial-zero">0</div>
-              </div>
-              <div class="dial-value" id="dial-value">00</div>
-            </div>
+          <div class="demo-controls">
+            <label for="demo-speed" data-i18n="demo.speed">速さ</label>
+            <select id="demo-speed">
+              <option value="slow" data-i18n="demo.speedSlow">ゆっくり</option>
+              <option value="normal" selected data-i18n="demo.speedNormal">ふつう</option>
+              <option value="fast" data-i18n="demo.speedFast">速い</option>
+            </select>
+            <button type="button" id="demo-stop" class="secondary" data-i18n="demo.stop" disabled>止める</button>
           </div>
-          <p class="hint" data-i18n="sim.hint">ドラッグ／← → / A D で回転。数字は 0–99。</p>
-          <div class="controls">
-            <button data-rot="-1" data-i18n="sim.rotm1">-1</button>
-            <button data-rot="+1" data-i18n="sim.rotp1">+1</button>
-          </div>
-          <div class="controls">
-            <button id="sim-reset" class="secondary" data-i18n="btn.reset">リセット</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="inner-header">
-            <h2 data-i18n="sim.innerTitle">内部可視化</h2>
-            <div class="legend">
-              <div class="legend-item">
-                <div class="legend-gate"></div>
-                <span data-i18n="sim.legend.gate">切り欠き（ゲート）</span>
-              </div>
-              <div class="legend-item">
-                <div class="legend-tsuku"></div>
-                <span data-i18n="sim.legend.tsuku">突起（ツク）</span>
-              </div>
-            </div>
-          </div>
-          <div class="combination-display">
-            <span data-i18n="sim.combination">正解番号:</span>
-            <span id="sim-combination" class="combination-text">3 - 33 - 63 - 13</span>
-          </div>
-          <div class="combination-display">
-            <span data-i18n="sim.internal">内部ディスクの番号:</span>
-            <span id="sim-internal" class="combination-text">7 - 27 - 61 - 6</span>
-            <span class="combination-note">(Disc1-Disc2-Disc3-Driving)</span>
-          </div>
-          <div class="stack">
-            <div class="wheel" id="dw">
-              <div class="wheel-title">Driving Disc</div>
-              <div class="wheel-value" id="dw-value">00</div>
-              <div class="gate" id="dw-gate"></div>
-              <div class="tsuku" id="dw-tsuku"></div>
-            </div>
-            <div class="wheel" id="w3">
-              <div class="wheel-title">Disc 3</div>
-              <div class="wheel-value" id="w3-value">00</div>
-              <div class="gate" id="w3-gate"></div>
-              <div class="tsuku" id="w3-tsuku"></div>
-            </div>
-            <div class="wheel" id="w2">
-              <div class="wheel-title">Disc 2</div>
-              <div class="wheel-value" id="w2-value">00</div>
-              <div class="gate" id="w2-gate"></div>
-              <div class="tsuku" id="w2-tsuku"></div>
-            </div>
-            <div class="wheel" id="w1">
-              <div class="wheel-title">Disc 1</div>
-              <div class="wheel-value" id="w1-value">00</div>
-              <div class="gate" id="w1-gate"></div>
-              <div class="tsuku" id="w1-tsuku"></div>
-            </div>
-            <div class="fence">
-              <div class="fence-bar" id="fence-bar"></div>
-              <div class="fence-status" id="fence-status">FENCE: UP</div>
-            </div>
-          </div>
-          <div class="status">
-            <div><span data-i18n="sim.current">ダイヤル現在値</span>: <span id="value">00</span></div>
-          </div>
+          <ol id="demo-log" class="demo-log" aria-live="polite"></ol>
         </div>
       </div>
-      <div id="sim-open-banner" class="open-banner" hidden>OPEN ✅</div>
     </section>
-
   </main>
 
-  <footer>
-    <div class="footer">
-      🔗 <span data-i18n="footer.repo">GitHubリポジトリはこちら</span>（
-      <a href="https://github.com/ipusiron/dialsafe-simulator" target="_blank" rel="noopener noreferrer">ipusiron/dialsafe-simulator</a> ）
-    </div>
+  <footer class="footer">
+    <span data-i18n="ui.repo">🔗 GitHubリポジトリ</span><a href="https://github.com/ipusiron/dialsafe-simulator" target="_blank" rel="noopener noreferrer">ipusiron/dialsafe-simulator</a>
   </footer>
 
-  <script src="script.js"></script>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/messages.js" defer></script>
+  <script src="js/i18n.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="js/dial-core.js" defer></script>
+  <script src="js/script.js" defer></script>
 </body>
 </html>
