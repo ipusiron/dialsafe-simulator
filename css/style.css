@@ -336,6 +336,56 @@ figcaption { margin-top: 8px; font-size: 14px; }
 .inner-hidden { padding: 12px; border: 1px dashed var(--border); border-radius: var(--radius-sm); }
 .inner-hidden p { margin-top: 0; }
 
+.seed-input {
+  width: 7.5em;
+  min-height: 44px;
+  padding: 6px 10px;
+  font: inherit;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.seed-input[aria-invalid="true"] { border-color: var(--contact); }
+.field-label { font-weight: 600; }
+.practice-alert { margin: 0 0 8px; color: var(--contact); font-weight: 600; }
+
+/* 錠前の動き（鍵を回すと、爪が下り、通れば閂が左へ引き込まれる。動きはクラスの付け外しと CSS だけ） */
+.lockview { display: block; width: 100%; max-width: 520px; height: auto; margin: 0 auto; }
+.lock-band { fill: var(--strip); }
+.lock-notch { fill: var(--card); stroke: var(--gate); stroke-width: 0.8; }
+.lock-notch.aligned { stroke: var(--gate-ok); }
+.lock-label { fill: var(--muted); font-size: 5.4px; dominant-baseline: middle; }
+.lock-fence { fill: var(--fence); }
+.lock-bolt { fill: var(--muted); }
+.lock-frame { fill: none; stroke: var(--muted); stroke-width: 0.8; }
+.lock-key { fill: var(--card); stroke: var(--text); stroke-width: 0.8; }
+.lock-slot { fill: var(--text); transform-box: fill-box; transform-origin: center; }
+.lock-fence, .lock-bolt, .lock-slot { transition: transform 0.35s ease; }
+.lockview.turned .lock-slot { transform: rotate(90deg); }
+.lockview.trying .lock-slot { transform: rotate(30deg); }
+.lockview.open .lock-fence { transform: translateY(34px); }
+.lockview.open .lock-bolt { transform: translateX(-28px); transition-delay: 0.35s; }
+.lockview.stop-0 .lock-fence { transform: translateY(2px); }
+.lockview.stop-1 .lock-fence { transform: translateY(10px); }
+.lockview.stop-2 .lock-fence { transform: translateY(18px); }
+.lockview.stop-3 .lock-fence { transform: translateY(26px); }
+.lockview.trying .lock-bolt { transform: translateX(-3px); transition-delay: 0.35s; }
+#lock-status.ok { color: var(--ok-text); font-weight: 600; }
+#lock-status.warn { color: var(--contact); font-weight: 600; }
+
+/* 振り返り */
+.review-card { grid-column: 1 / -1; }
+.review-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.review-list { margin: 0; padding-left: 2.2em; font-size: 14px; max-height: 420px; overflow-y: auto; }
+.review-list > li { margin: 6px 0; }
+.review-list .judge { font-weight: 600; }
+.review-list .judge.warn { color: var(--contact); }
+.review-list .detail { display: block; color: var(--muted); }
+.review-list .ok { color: var(--ok-text); font-weight: 600; }
+.review-list .fail { color: var(--contact); font-weight: 600; }
+
 /* 手順ガイド */
 .guide-steps { list-style: none; padding: 0; margin: 0 0 10px; display: grid; gap: 6px; }
 

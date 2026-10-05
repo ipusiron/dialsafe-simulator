@@ -246,10 +246,11 @@
   }
 
   // 記録を、記録を始めたときの状態から模型で回し直す。回した区切りごとに、指標の数字（前→後）・各ディスクが動いた目盛り数・
-  // 区切りの終わりの手順ガイドを返す。鍵を回したときは、開いたか・ずれ・ずれたディスクを最後に動かした区切り（なければ null）を返す
-  function analyzeHistory(lock, start, history) {
+  // 区切りの終わりの手順ガイドを返す。鍵を回したときは、開いたか・ずれ・ずれたディスクを最後に動かした区切り（なければ null）を返す。
+  // guide は記録を始めたときの手順ガイド（自動実演のあとなど、途中から記録するとき）
+  function analyzeHistory(lock, start, history, guide = createGuide()) {
     let s = start;
-    let g = createGuide();
+    let g = guide;
     const lastMoved = [null, null, null];
     const items = history.map((h, index) => {
       if (h.type === 'close') {
