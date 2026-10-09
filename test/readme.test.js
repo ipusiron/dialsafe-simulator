@@ -215,3 +215,17 @@ test('画像: 参照はすべて実在する。スクリーンショットは日
   const files = (dir) => fs.readdirSync(path.join(ROOT, dir)).filter((f) => /\.(png|jpg)$/.test(f)).map((f) => `${dir}/${f}`);
   for (const f of [...files('assets'), ...files('assets/en')]) assert.ok(used.has(f), `参照していない画像: ${f}`);
 });
+
+test('ユースケースの「このツールならではの使い方」の数値は模型で計算し直した値と同じ（日英）', () => {
+  const [ja, en] = [read('README.md'), read('README.en.md')];
+  const [p3, p2, p1] = C.pickupDistances(lock);
+  assert.deepEqual([p3, p2, p1, p2 - p3, p1 - p2, lock.play], [97, 193, 289, 96, 96, 96]);
+  assert.ok(ja.includes('97・193・289目盛りで動き出し、1枚ごとに96目盛り') && en.includes('97, 193 and 289 graduations, each 96 graduations'));
+  assert.deepEqual([rates[1], rates[2], rates[3]], ['100.0%', '97.0%', '0.0%']);
+  assert.ok(ja.includes('5回にしても開く割合が100.0%のままで、3回に減らすと97.0%') && ja.includes('4回にすると0.0%'));
+  assert.ok(en.includes('5 times first still opens the lock 100.0%') && en.includes('3 times lowers it to 97.0%') && en.includes('gives 0.0%'));
+  const [g2, g3, g4] = C.gapLimits();
+  const total = 100 * g2 * g3 * g4;
+  assert.deepEqual([g2, g3, g4, total, Math.round(total / 1e6)], [88, 92, 96, 77721600, 78]);
+  assert.ok(ja.includes('100×88×92×96＝77,721,600通り') && en.includes('100×88×92×96 = 77,721,600'));
+});
