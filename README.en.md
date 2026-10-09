@@ -348,6 +348,14 @@ The "standard" design among US safe locks (UL Group 2) is the Sargent & Greenlea
 
 ## 🎯 Use cases
 
+Ways of using this tool in particular
+
+- Seeing that chained play makes the later parts move later (physics and mechanism classes): turn the dial left, stop, then turn right, and Discs 3, 2 and 1 start moving at 97, 193 and 289 graduations, each 96 graduations (one turn of 100 minus the pin thickness 4) later than the one before. It has the same shape as a train starting off, where the gaps in the couplings close one after another from the front and the rear cars are pulled later. The idle turn right after reversing direction is the same thing as backlash in the feed screw of a machine tool or the focus ring of a camera
+- Telling "at least" from "exactly" in written procedures (work procedures and quality training): turning right 5 times first still opens the lock 100.0% of the time, while 3 times lowers it to 97.0%. Turning left 4 times in STEP2, one more than needed, gives 0.0%. Some steps tolerate extra turns and others must be exact or they undo earlier work, and the numbers show why a procedure should say "4 times or more" and "exactly 3 times" differently
+- Checking counting under constraints (math classes): the distance between numbers has upper limits (88 in STEP2, 92 in STEP3, 96 in STEP4), so the combinations whose gates line up exactly number 100×88×92×96 = 77,721,600, about 78% of the nominal 100 million. You can see that the product rule, multiplying the choices at each step, also works on a real object with constraints
+
+General uses
+
 - Classes and training: in physical security or mechanism classes, show with the moving model that the counts in the steps come from picking up the discs one at a time
 - Safe owners: understand what the steps in your safe's manual mean, and why you start over after overshooting
 - Lock and locksmith courses: help explain the structure of the fixed dial lock (gates, pins, fence) within legitimate operation
